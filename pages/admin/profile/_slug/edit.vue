@@ -8,6 +8,13 @@
     <label for="description">Description:</label>
     <input v-model="profile.description" name="description" type="text" />
 
+    <h2 class="subtitle">Criteria</h2>
+
+    <Criteria
+      :criteria="profile.criteria"
+      @add:criterion="addCriterion"
+    ></Criteria>
+
     <button @click="saveProfile">Save</button>
 
     <nuxt-link to="/admin/profile">Back</nuxt-link>
@@ -24,6 +31,9 @@ export default {
     )
   },
   methods: {
+    addCriterion(criterion) {
+      this.profile.addCriterion(criterion)
+    },
     saveProfile() {
       this.$store.commit('updateProfile', this.profile)
 
