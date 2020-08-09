@@ -3,6 +3,7 @@
     <ul>
       <li v-for="(criterion, key) in criteria" :key="key">
         {{ criterion.name }} - ({{ criterion.weight }}%)
+        <button @click="removeCriterion(criterion)">x</button>
       </li>
     </ul>
 
@@ -28,6 +29,9 @@ export default {
       this.$emit('add:criterion', new Criterion(this.criterionName))
 
       this.criterionName = ''
+    },
+    removeCriterion(criterion) {
+      this.$emit('remove:criterion', criterion)
     },
   },
 }
