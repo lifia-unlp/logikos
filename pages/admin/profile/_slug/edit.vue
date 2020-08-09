@@ -26,16 +26,22 @@ import _ from 'lodash'
 
 export default {
   created() {
-    this.profile = this.$store.getters.getProfileByName(
-      _.lowerCase(this.$route.params.slug)
+    const p = _.cloneDeep(
+      this.$store.getters.getProfileByName(_.lowerCase(this.$route.params.slug))
     )
+
+    this.profile = p
+    this.originalName = p.name
   },
   methods: {
     addCriterion(criterion) {
       this.profile.addCriterion(criterion)
     },
     saveProfile() {
-      this.$store.commit('updateProfile', this.profile)
+      this.$store.commit('updateProfile', {
+        originalName: this.originalName,
+        profile: this.profile,
+      })
 
       this.$router.push({ name: 'admin-profile' })
     },

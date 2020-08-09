@@ -13,6 +13,12 @@ export const mutations = {
     state.profiles.push(profile)
   },
 
+  updateProfile(state, payload) {
+    const idx = state.profiles.findIndex((p) => p.name === payload.originalName)
+
+    state.profiles[idx] = payload.profile
+  },
+
   removeProfile(state, profileName) {
     const idx = state.profiles.findIndex((p) => p.name === profileName)
 
