@@ -12,7 +12,8 @@
 
     <Criteria
       :criteria="profile.criteria"
-      @add:criterion="addCriterion"
+      @criterion:add="addCriterion"
+      @criterion:remove="removeCriterion"
     ></Criteria>
 
     <button @click="saveProfile">Save</button>
@@ -25,17 +26,25 @@
 import _ from 'lodash'
 
 export default {
-  created() {
-    const p = _.cloneDeep(
+  mounted() {
+    this.profile = _.cloneDeep(
       this.$store.getters.getProfileByName(_.lowerCase(this.$route.params.slug))
     )
 
-    this.profile = p
-    this.originalName = p.name
+    this.originalName = this.profile.name
+  },
+  data() {
+    return {
+      profile: {},
+      originalName: '',
+    }
   },
   methods: {
     addCriterion(criterion) {
       this.profile.addCriterion(criterion)
+    },
+    removeCriterion(criterion) {
+      this.profile.removeCriterion(criterion.name)
     },
     saveProfile() {
       this.$store.commit('updateProfile', {

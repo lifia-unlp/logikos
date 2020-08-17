@@ -12,7 +12,8 @@
 
     <Criteria
       :criteria="profile.criteria"
-      @add:criterion="addCriterion"
+      @criterion:add="addCriterion"
+      @criterion:remove="removeCriterion"
     ></Criteria>
 
     <button @click="saveProfile">Save</button>
@@ -36,6 +37,9 @@ export default {
   methods: {
     addCriterion(criterion) {
       this.profile.addCriterion(criterion)
+    },
+    removeCriterion(criterion) {
+      this.profile.removeCriterion(criterion.name)
     },
     saveProfile() {
       this.$store.commit('addProfile', this.profile)
