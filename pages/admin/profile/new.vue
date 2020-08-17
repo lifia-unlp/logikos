@@ -12,8 +12,8 @@
 
     <Criteria
       :criteria="profile.criteria"
-      @add:criterion="addCriterion"
-      @remove:criterion="removeCriterion"
+      @criterion:add="addCriterion"
+      @criterion:remove="removeCriterion"
     ></Criteria>
 
     <button @click="saveProfile">Save</button>
