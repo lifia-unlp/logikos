@@ -1,10 +1,22 @@
 import { Matrix, EigenvalueDecomposition } from 'ml-matrix'
 import _ from 'lodash'
 
-const CONSISTENCY_INDEXES = Object.freeze([0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49])
+const CONSISTENCY_INDEXES = Object.freeze([
+  0,
+  0,
+  0,
+  0.58,
+  0.9,
+  1.12,
+  1.24,
+  1.32,
+  1.41,
+  1.45,
+  1.49,
+])
 
 export default class {
-  constructor (size = 0) {
+  constructor(size = 0) {
     this.matrix = []
 
     for (let i = 0; i < size; i++) {
@@ -12,7 +24,7 @@ export default class {
     }
   }
 
-  enlarge () {
+  enlarge() {
     // eslint-disable-next-line prefer-const
     let newRow = [1]
 
@@ -24,7 +36,7 @@ export default class {
     this.matrix.push(newRow)
   }
 
-  shrink () {
+  shrink() {
     if (this.matrix.length) {
       for (let row = 0; row < this.matrix.length; row++) {
         this.matrix[row].pop()
@@ -34,7 +46,7 @@ export default class {
     }
   }
 
-  reset () {
+  reset() {
     for (let row = 0; row < this.matrix.length; row++) {
       for (let col = 0; col < this.matrix[row].length; col++) {
         this.matrix[row][col] = 1
@@ -42,24 +54,24 @@ export default class {
     }
   }
 
-  setCell (row, col, value) {
+  setCell(row, col, value) {
     // TODO should not be possible to set an invalid position or an invalid value
     this.matrix[row][col] = value
     this.setReciprocalValue(col, row)
   }
 
-  setReciprocalValue (row, col) {
+  setReciprocalValue(row, col) {
     this.matrix[row][col] = 1 / this.matrix[col][row]
   }
 
-  weights () {
+  weights() {
     const vector = this._principalEigenvector()
     const sum = _.sum(vector)
 
     return _.map(vector, (e) => e / sum)
   }
 
-  autocomplete (chaos = false) {
+  autocomplete(chaos = false) {
     for (let col = 2; col < this.matrix.length; col++) {
       for (let row = 1; row < col; row++) {
         this.setCell(row, col, this._computeCellValue(row, col, chaos))
@@ -67,20 +79,23 @@ export default class {
     }
   }
 
-  consistencyRatio () {
+  consistencyRatio() {
     return this.consistencyIndex() / this.randomConsistencyIndex()
   }
 
-  consistencyIndex () {
-    return (this._principalEigenvalue() - this.matrix.length) / (this.matrix.length - 1)
+  consistencyIndex() {
+    return (
+      (this._principalEigenvalue() - this.matrix.length) /
+      (this.matrix.length - 1)
+    )
   }
 
-  randomConsistencyIndex () {
+  randomConsistencyIndex() {
     // TODO what if i the matrix is larger than 10 alternatives
     return CONSISTENCY_INDEXES[this.matrix.length]
   }
 
-  _computeCellValue (row, col, chaos) {
+  _computeCellValue(row, col, chaos) {
     // Si el numero se encontraba entre 0 y 1 ver como agregar o quitar un numero decimal, es decir que 1/3 se convierta en 1/2 o en 1/4
     // Si el numero es 1 deberia o dejarlo así o saltar a 2, si el numero es 2 o mayor deberia ver por ejemplo si la division anterior me dió un numero que se acomodo para arriba yo deberia dejarlo igual o tirarlo para abajo, sino jugar con -+1
     //
@@ -101,18 +116,22 @@ export default class {
     return value
   }
 
-  _principalEigenvector () {
+  _principalEigenvector() {
     const eigenvectors = this._eigenvalueDecomposition().eigenvectorMatrix
-    const eigenvalueIdx = this._eigenvalueDecomposition().realEigenvalues.indexOf(this._principalEigenvalue())
+    const eigenvalueIdx = this._eigenvalueDecomposition().realEigenvalues.indexOf(
+      this._principalEigenvalue()
+    )
 
-    return _.times(eigenvectors.rows, (row) => eigenvectors.get(row, eigenvalueIdx))
+    return _.times(eigenvectors.rows, (row) =>
+      eigenvectors.get(row, eigenvalueIdx)
+    )
   }
 
-  _principalEigenvalue () {
+  _principalEigenvalue() {
     return Math.max(...this._eigenvalueDecomposition().realEigenvalues)
   }
 
-  _eigenvalueDecomposition () {
+  _eigenvalueDecomposition() {
     return new EigenvalueDecomposition(new Matrix(this.matrix))
   }
 }

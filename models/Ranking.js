@@ -1,5 +1,5 @@
 export default class {
-  constructor (ranking) {
+  constructor(ranking) {
     this.ranking = ranking
   }
 

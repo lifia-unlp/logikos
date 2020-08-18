@@ -2,19 +2,19 @@ import DecisionMatrix from './DecisionMatrix'
 import Ranking from './Ranking'
 
 export default class {
-  constructor (criterion, alternatives = []) {
+  constructor(alternatives = [], criterion = null) {
     this.criterion = criterion
     this.alternatives = alternatives
     this.dm = new DecisionMatrix(alternatives.length)
   }
 
-  addAlternative (alternative) {
+  addAlternative(alternative) {
     this.alternatives.push(alternative)
 
     this.dm.enlarge()
   }
 
-  removeAlternative (alternative) {
+  removeAlternative(alternative) {
     const idx = this.alternatives.indexOf(alternative)
 
     if (idx !== -1) {
@@ -24,14 +24,26 @@ export default class {
     }
   }
 
-  loadPreset () {
-    this.alternatives = this.criterion.preset.sortAlternatives(this.alternatives)
+  loadPreset() {
+    this.alternatives = this.criterion.preset.sortAlternatives(
+      this.alternatives
+    )
 
-    this.dm.matrix = this.criterion.preset.getSubDecisionMatrix(this.alternatives)
+    this.dm.matrix = this.criterion.preset.getSubDecisionMatrix(
+      this.alternatives
+    )
   }
 
   // TODO improve this, maybe add a "absolute weights" boolean argument
-  rank () {
-    return new Ranking(this.dm.weights().map((weight, idx) => ({ alternative: this.alternatives[idx], weight: weight * this.criterion.absoluteWeight() })))
+  rank() {
+    const absoluteWeight =
+      this.criterion !== null ? this.criterion.absoluteWeight() : 1
+
+    return new Ranking(
+      this.dm.weights().map((weight, idx) => ({
+        alternative: this.alternatives[idx],
+        weight: weight * absoluteWeight,
+      }))
+    )
   }
 }
