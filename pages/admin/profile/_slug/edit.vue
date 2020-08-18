@@ -26,7 +26,7 @@
 import _ from 'lodash'
 
 export default {
-  mounted() {
+  created() {
     this.profile = _.cloneDeep(
       this.$store.getters.getProfileByName(_.lowerCase(this.$route.params.slug))
     )
