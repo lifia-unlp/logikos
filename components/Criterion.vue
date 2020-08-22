@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <li style="border: 1px solid red;">
+  <div class="ml-8" style="border: 1px solid red;">
+    <li>
       {{ criterion.name }} - {{ criterion.absoluteWeight() }}
       <a @click="removeCriterion(criterion)">x</a>
     </li>
@@ -26,7 +26,6 @@ export default {
       this.criterion.addSubcriterion(subcriterion)
     },
     removeSubcriterion(subcriterion) {
-      console.log('REMOVE', subcriterion)
       this.criterion.removeSubcriterion(subcriterion.name)
     },
   },
