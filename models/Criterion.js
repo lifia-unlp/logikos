@@ -5,6 +5,8 @@ class Criterion {
     this.name = name
     this.weight = 0
     this.parent = null
+    this.attribute = null
+    this.preset = {}
     this.subcriteria = []
 
     this._addSubcriteria(subcriteria)
@@ -30,6 +32,10 @@ class Criterion {
     if (idx !== -1) {
       this.subcriteria.splice(idx, 1)
     }
+  }
+
+  shouldBeCompared() {
+    return this.subcriteria.length > 0
   }
 
   relativeWeight() {
