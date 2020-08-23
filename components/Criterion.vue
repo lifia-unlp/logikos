@@ -1,7 +1,7 @@
 <template>
-  <div class="ml-8" style="border: 1px solid red;">
-    <li>
-      {{ criterion.name }} - {{ criterion.absoluteWeight() }}
+  <div class="ml-8">
+    <li class="text-lg">
+      {{ criterion.name }} ({{ criterion.absoluteWeight() }}%)
       <a @click="removeCriterion(criterion)">x</a>
     </li>
 
@@ -17,7 +17,14 @@
 <script>
 export default {
   name: 'Criterion',
-  props: ['criterion'],
+  props: {
+    criterion: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+  },
   methods: {
     removeCriterion(criterion) {
       this.$emit('criterion:remove', criterion)

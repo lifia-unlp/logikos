@@ -19,7 +19,12 @@
         <p>CR: {{ comparison.dm.consistencyRatio() }}</p>
       </div>
     </div>
-    <button @click="save">Save comparison</button>
+    <button
+      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
+      @click="save"
+    >
+      Save comparison
+    </button>
   </div>
 </template>
 
@@ -31,7 +36,14 @@ import 'chartjs-plugin-dragdata'
 
 export default {
   name: 'ComparisonC',
-  props: ['comparison'],
+  props: {
+    comparison: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+  },
   data() {
     return {
       lineChart: {},
@@ -65,7 +77,7 @@ export default {
     },
 
     save() {
-      this.$emit('comparison:rank', this.comparison.rank())
+      this.$emit('comparison:rank', this.comparison)
     },
   },
 }

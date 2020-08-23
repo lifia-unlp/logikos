@@ -31,7 +31,14 @@
 <script>
 export default {
   name: 'ProfilesTable',
-  props: ['profiles'],
+  props: {
+    profiles: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+  },
   methods: {
     deleteProfile(profileName) {
       this.$store.commit('removeProfile', profileName)

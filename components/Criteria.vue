@@ -1,5 +1,5 @@
 <template>
-  <ul class="list-disc">
+  <ul class="list-none">
     <Criterion
       v-for="(criterion, key) in criteria"
       :key="key"
@@ -8,9 +8,18 @@
     >
     </Criterion>
 
-    <button @click="toggleAdding">add</button>
-    <button @click="toggleCompare">
-      compare
+    <button
+      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
+      @click="toggleAdding"
+    >
+      Add
+    </button>
+    <button
+      v-if="criteria.length > 0"
+      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
+      @click="toggleCompare"
+    >
+      Compare
     </button>
 
     <CriterionForm v-if="adding" @criterion:add="addCriterion"></CriterionForm>
@@ -31,7 +40,9 @@ import CriterionComponent from '@/components/Criterion.vue'
 
 const c = {
   name: 'Criteria',
-  props: ['criteria'],
+  props: {
+    criteria: Object,
+  },
   data() {
     return {
       criterionName: '',
@@ -57,7 +68,9 @@ const c = {
     removeCriterion(criterion) {
       this.$emit('criterion:remove', criterion)
     },
-    weightCriteria(ranking) {
+    weightCriteria(comparison) {
+      const ranking = comparison.rank()
+
       for (const rankedItem of ranking.ranking) {
         for (const criterion of this.criteria) {
           if (rankedItem.alternative === criterion) {

@@ -2,13 +2,13 @@
   <div class="container">
     <h1 class="title">New Profile</h1>
 
-    <label for="name">Name:</label>
-    <input v-model="profile.name" name="name" type="text" />
+    <label class="block font-bold">Name</label>
+    <input v-model="profile.name" class="border rounded" type="text" />
 
-    <label for="description">Description:</label>
-    <input v-model="profile.description" name="description" type="text" />
+    <label class="block font-bold">Description</label>
+    <input v-model="profile.description" class="border rounded" type="text" />
 
-    <h2 class="subtitle">Criteria</h2>
+    <h2 class="text-2xl">Criteria</h2>
 
     <Criteria
       :criteria="profile.criteria"
@@ -16,9 +16,20 @@
       @criterion:remove="removeCriterion"
     ></Criteria>
 
-    <button @click="saveProfile">Save</button>
-
-    <nuxt-link to="/admin/profile">Back</nuxt-link>
+    <div class="mt-8">
+      <button
+        class="py-1 px-2 rounded bg-green-400 text-white font-bold"
+        @click="saveProfile"
+      >
+        Save
+      </button>
+      <nuxt-link
+        class="py-1 px-2 rounded bg-red-400 text-white font-bold"
+        to="/admin/profile"
+      >
+        back
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -26,9 +37,6 @@
 import Profile from '@/models/Profile'
 
 export default {
-  // created() {
-  //  console.log(this.$router.options.routes)
-  // },
   data() {
     return {
       profile: new Profile(),
@@ -59,7 +67,6 @@ export default {
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  text-align: center;
 }
 
 .title {
@@ -69,14 +76,6 @@ export default {
   font-size: 50px;
   color: #35495e;
   letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
 }
 
 .links {

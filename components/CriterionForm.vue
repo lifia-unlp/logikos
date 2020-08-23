@@ -1,36 +1,56 @@
 <template>
-  <div>
-    <label for="name">Name:</label>
-    <input v-model="name" name="name" type="text" />
+  <div class="mt-2 p-4 order-solid border-2 border-indigo-300">
+    <div>
+      <label class="block font-bold">Name</label>
+      <input v-model="name" class="border rounded" type="text" />
+    </div>
 
-    <label for="setAttribute">Set attribute?</label>
-    <input v-model="setAttribute" type="checkbox" name="setAttribute" />
+    <label>Set attribute?</label>
+    <input v-model="setAttribute" type="checkbox" />
 
     <template v-if="setAttribute">
-      <label for="attribute">Attribute:</label>
-      <input v-model="attribute" name="attribute" type="text" />
+      <label class="block font-bold">Attribute</label>
+      <input v-model="attribute" class="border rounded" type="text" />
     </template>
 
-    <p>Preset:</p>
-    <label for="presetValue">Value:</label>
-    <input v-model="presetValue" name="presetValue" type="text" />
-    <button @click="addPresetValue">Add Value</button>
-    <button @click="comparePreset">compare</button>
+    <h3 class="text-xl m-2 text-indigo-800">Preset</h3>
 
-    <ul>
-      <li v-for="(value, key) in presetValues" :key="key">
-        {{ value }}
-      </li>
-    </ul>
+    <div class="pl-4">
+      <label class="block font-bold">Value</label>
+      <input v-model="presetValue" class="border rounded" type="text" />
+      <button
+        class="py-1 px-2 border-2 rounded border-indigo-300 text-sm"
+        @click="addPresetValue"
+      >
+        Add value
+      </button>
+      <button
+        class="py-1 px-2 border-2 rounded border-indigo-300 text-sm"
+        @click="comparePreset"
+      >
+        Compare
+      </button>
 
-    <ComparisonC
-      v-if="comparing"
-      :comparison="comparison"
-      @comparison:rank="weightCriteria"
+      <ul>
+        <li v-for="(value, key) in presetValues" :key="key" class="inline">
+          {{ value }}
+        </li>
+      </ul>
+
+      <ComparisonC
+        v-if="comparing"
+        :comparison="comparison"
+        @comparison:rank="weightCriteria"
+      >
+      </ComparisonC>
+    </div>
+
+    <button
+      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
+      @click="addCriterion"
     >
-    </ComparisonC>
-
-    <button @click="addCriterion">save criterion</button>
+      Save criterion
+    </button>
   </div>
 </template>
 
@@ -67,10 +87,9 @@ export default {
       this.comparing = !this.comparing
       this.comparison = new Comparison(this.presetValues)
     },
-    weightCriteria() {
-      this.criterion.preset = { values: this.presetValues }
+    weightCriteria(comparison) {
+      this.criterion.preset = { values: this.presetValues, dm: comparison.dm }
       this.comparing = false
-      console.log('TO DO')
     },
   },
 }
