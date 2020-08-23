@@ -13,11 +13,7 @@
       compare
     </button>
 
-    <div v-if="adding">
-      <label for="criterionName">Name: </label>
-      <input v-model="criterionName" name="criterionName" type="text" />
-      <button @click="addCriterion">add</button>
-    </div>
+    <CriterionForm v-if="adding" @criterion:add="addCriterion"></CriterionForm>
 
     <ComparisonC
       v-if="comparing"
@@ -29,7 +25,7 @@
 </template>
 
 <script>
-import Criterion from '@/models/Criterion'
+// import Criterion from '@/models/Criterion'
 import Comparison from '@/models/Comparison'
 import CriterionComponent from '@/components/Criterion.vue'
 
@@ -53,10 +49,9 @@ const c = {
 
       this.comparing = !this.comparing
     },
-    addCriterion() {
-      this.$emit('criterion:add', new Criterion(this.criterionName))
+    addCriterion(criterion) {
+      this.$emit('criterion:add', criterion)
 
-      this.criterionName = ''
       this.adding = false
     },
     removeCriterion(criterion) {
