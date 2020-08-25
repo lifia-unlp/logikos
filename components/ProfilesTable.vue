@@ -15,7 +15,7 @@
         <td>
           <nuxt-link
             :to="{
-              name: 'admin-profile-id-edit',
+              name: 'admin-profiles-id-edit',
               params: { id: profile._id },
             }"
           >
