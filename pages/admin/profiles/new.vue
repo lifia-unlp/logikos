@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Edit Profile</h1>
+    <h1 class="title">New Profile</h1>
 
     <label class="block font-bold">Name</label>
     <input v-model="profile.name" class="border rounded" type="text" />
@@ -10,11 +10,11 @@
 
     <h2 class="text-2xl">Criteria</h2>
 
-    <Criteria
+    <AdminCriteria
       :criteria="profile.criteria"
       @criterion:add="addCriterion"
       @criterion:remove="removeCriterion"
-    ></Criteria>
+    ></AdminCriteria>
 
     <div class="mt-8">
       <button
@@ -25,7 +25,7 @@
       </button>
       <nuxt-link
         class="py-1 px-2 rounded bg-red-400 text-white font-bold"
-        to="/admin/profile"
+        to="/admin/profiles"
       >
         back
       </nuxt-link>
@@ -34,21 +34,13 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import Profile from '@/models/Profile'
 
 export default {
   data() {
     return {
-      profile: {},
-      originalName: '',
+      profile: new Profile(),
     }
-  },
-  created() {
-    this.profile = _.cloneDeep(
-      this.$store.getters.getProfileById(this.$route.params.id)
-    )
-
-    this.originalName = this.profile.name
   },
   methods: {
     addCriterion(criterion) {
@@ -58,7 +50,7 @@ export default {
       this.profile.removeCriterion(criterion.name)
     },
     saveProfile() {
-      this.$store.dispatch('updateProfile', this.profile)
+      this.$store.dispatch('addProfile', this.profile)
 
       this.$router.push({ name: 'admin-profile' })
     },
@@ -84,14 +76,6 @@ export default {
   font-size: 50px;
   color: #35495e;
   letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
 }
 
 .links {

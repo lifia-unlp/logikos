@@ -1,4 +1,4 @@
-// import _ from 'lodash'
+import _ from 'lodash'
 
 class Criterion {
   constructor(name, subcriteria = []) {
@@ -54,6 +54,14 @@ class Criterion {
   _addSubcriteria(criteria) {
     for (const criterion of criteria) {
       this.addSubcriterion(criterion)
+    }
+  }
+
+  getComparables() {
+    if (this.subcriteria.length) {
+      return _.flattenDeep(this.subcriteria.map((sc) => sc.getComparables()))
+    } else {
+      return this
     }
   }
 

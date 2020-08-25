@@ -35,6 +35,10 @@ class Profile {
     return this.criteria.findIndex((c) => c.name === criterionName)
   }
 
+  getComparableCriteria() {
+    return _.flattenDeep(this.criteria.map((c) => c.getComparables()))
+  }
+
   static deserealize(json) {
     json.criteria = json.criteria.map((c) => Criterion.deserealize(c))
 
