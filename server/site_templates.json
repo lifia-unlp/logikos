@@ -1,0 +1,34 @@
+[
+  {
+    "url": "www.gsmarena.com",
+    "patterns": [
+      {
+        "attribute": "model",
+        "xpath": "//h1[@data-spec='modelname']"
+      },
+      {
+        "attribute": "image",
+        "xpath": "//div[@class='specs-photo-main']/a/img/@src"
+      },
+      {
+        "attribute": "os",
+        "xpath": "//td[@data-spec='os']"
+      },
+      {
+        "attribute": "ram",
+        "xpath": "//span[@data-spec='ramsize-hl']",
+        "parsers": ["NumberParser"]
+      },
+      {
+        "attribute": "storage",
+        "xpath": "//span[@data-spec='storage-hl']",
+        "parsers": ["NumberParser"]
+      },
+      {
+        "attribute": "price",
+        "xpath": "//td[@data-spec='price']",
+        "parsers": ["MoneyParser"]
+      }
+    ]
+  }
+]

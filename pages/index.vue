@@ -2,12 +2,14 @@
   <div class="container">
     <h1 class="text-4xl">Neo-logikos</h1>
 
-    <label class="block font-bold">Profiles</label>
-    <select v-model="selectedProfileId">
-      <option v-for="(profile, i) in profiles" :key="i" :value="profile._id">
-        {{ profile.name }}
-      </option>
-    </select>
+    <div class="mt-2">
+      <label class="font-bold">Profile</label>
+      <select v-model="selectedProfileId">
+        <option v-for="(profile, i) in profiles" :key="i" :value="profile._id">
+          {{ profile.name }}
+        </option>
+      </select>
+    </div>
 
     <div v-if="selectedProfileId">
       <p>
@@ -33,16 +35,40 @@
         </li>
       </ul>
     </div>
+
+    <div class="mt-4">
+      <h1 class="text-lg font-bold">Celulares</h1>
+
+      <label class="font-bold">URL</label>
+      <input v-model="alternativeURL" class="border rounded" type="text" />
+      <button
+        @click="fetchAlternative()"
+        class="p-1 m-1 border-2 border-blue-400 rounded text-xs font-bold"
+      >
+        Search
+      </button>
+    </div>
+
+    <Phone
+      v-for="(alternative, key) in alternatives"
+      :key="key"
+      :phone="alternative"
+    >
+    </Phone>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
+import axios from 'axios'
+
 export default {
   data() {
     return {
       selectedProfileId: null,
+      alternativeURL: '',
+      alternatives: [],
     }
   },
   computed: {
@@ -53,6 +79,20 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchProfiles')
+  },
+  methods: {
+    fetchAlternative() {
+      if (!this.alternatives.find((a) => a.url === this.alternativeURL)) {
+        axios
+          .get(`http://localhost:9000/alternative?url=${this.alternativeURL}`)
+          .then((response) => {
+            if (!('error' in response.data)) {
+              this.alternatives.push(response.data)
+              this.alternativeURL = ''
+            }
+          })
+      }
+    },
   },
 }
 </script>
