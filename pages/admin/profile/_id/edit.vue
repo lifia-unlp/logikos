@@ -45,7 +45,7 @@ export default {
   },
   created() {
     this.profile = _.cloneDeep(
-      this.$store.getters.getProfileByName(_.lowerCase(this.$route.params.slug))
+      this.$store.getters.getProfileById(this.$route.params.id)
     )
 
     this.originalName = this.profile.name
@@ -58,10 +58,7 @@ export default {
       this.profile.removeCriterion(criterion.name)
     },
     saveProfile() {
-      this.$store.commit('updateProfile', {
-        originalName: this.originalName,
-        profile: this.profile,
-      })
+      this.$store.dispatch('updateProfile', this.profile)
 
       this.$router.push({ name: 'admin-profile' })
     },

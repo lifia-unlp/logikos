@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import Criterion from '@/models/Criterion'
 
 class Profile {
   constructor(name, description, criteria = []) {
@@ -32,6 +33,12 @@ class Profile {
 
   _findCriterionIndex(criterionName) {
     return this.criteria.findIndex((c) => c.name === criterionName)
+  }
+
+  static deserealize(json) {
+    json.criteria = json.criteria.map((c) => Criterion.deserealize(c))
+
+    return Object.assign(new Profile(), json)
   }
 }
 

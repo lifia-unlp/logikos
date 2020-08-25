@@ -15,13 +15,13 @@
         <td>
           <nuxt-link
             :to="{
-              name: 'admin-profile-slug-edit',
-              params: { slug: profile.slug() },
+              name: 'admin-profile-id-edit',
+              params: { id: profile._id },
             }"
           >
             edit
           </nuxt-link>
-          <a @click="deleteProfile(profile.name)">delete</a>
+          <a @click="deleteProfile(profile._id)">delete</a>
         </td>
       </tr>
     </tbody>
@@ -40,8 +40,8 @@ export default {
     },
   },
   methods: {
-    deleteProfile(profileName) {
-      this.$store.commit('removeProfile', profileName)
+    deleteProfile(profileId) {
+      this.$store.dispatch('removeProfile', profileId)
     },
   },
 }

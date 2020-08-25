@@ -56,6 +56,16 @@ class Criterion {
       this.addSubcriterion(criterion)
     }
   }
+
+  static deserealize(json) {
+    const subcriteria = json.subcriteria.map((c) => Criterion.deserealize(c))
+
+    delete json.subcriteria
+
+    const c = Object.assign(new Criterion(json.name, subcriteria), json)
+
+    return c
+  }
 }
 
 export default Criterion
