@@ -10,11 +10,11 @@
 
     <h2 class="text-2xl">Criteria</h2>
 
-    <Criteria
+    <AdminCriteria
       :criteria="profile.criteria"
       @criterion:add="addCriterion"
       @criterion:remove="removeCriterion"
-    ></Criteria>
+    ></AdminCriteria>
 
     <div class="mt-8">
       <button

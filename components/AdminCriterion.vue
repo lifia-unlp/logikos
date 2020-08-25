@@ -5,18 +5,18 @@
       <a @click="removeCriterion(criterion)">x</a>
     </li>
 
-    <Criteria
+    <AdminCriteria
       :criteria="criterion.subcriteria"
       @criterion:add="addSubcriterion"
       @criterion:remove="removeSubcriterion"
     >
-    </Criteria>
+    </AdminCriteria>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Criterion',
+  name: 'AdminCriterion',
   props: {
     criterion: {
       type: Object,

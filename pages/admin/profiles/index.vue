@@ -4,7 +4,7 @@
 
     <ProfilesTable :profiles="profiles"></ProfilesTable>
 
-    <nuxt-link to="/admin/profile/new">New Profile</nuxt-link>
+    <nuxt-link to="/admin/profiles/new">New Profile</nuxt-link>
   </div>
 </template>
 

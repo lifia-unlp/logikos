@@ -1,12 +1,12 @@
 <template>
   <ul class="list-none">
-    <Criterion
+    <AdminCriterion
       v-for="(criterion, key) in criteria"
       :key="key"
       :criterion="criterion"
       @criterion:remove="removeCriterion"
     >
-    </Criterion>
+    </AdminCriterion>
 
     <button
       class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
@@ -24,22 +24,21 @@
 
     <CriterionForm v-if="adding" @criterion:add="addCriterion"></CriterionForm>
 
-    <ComparisonC
+    <ComparisonForm
       v-if="comparing"
       :comparison="comparison"
       @comparison:rank="weightCriteria"
     >
-    </ComparisonC>
+    </ComparisonForm>
   </ul>
 </template>
 
 <script>
-// import Criterion from '@/models/Criterion'
 import Comparison from '@/models/Comparison'
-import CriterionComponent from '@/components/Criterion.vue'
+import AdminCriterion from '@/components/AdminCriterion'
 
 const c = {
-  name: 'Criteria',
+  name: 'AdminCriteria',
   props: {
     criteria: Array,
   },
@@ -84,9 +83,9 @@ const c = {
   },
 }
 
-CriterionComponent.components = { Criteria: c }
+AdminCriterion.components = { AdminCriteria: c }
 
-c.components = { Criterion: CriterionComponent }
+c.components = { AdminCriterion }
 
 export default c
 </script>
