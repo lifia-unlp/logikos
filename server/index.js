@@ -24,6 +24,7 @@ app.get('/profiles', (req, res) => {
         console.log(result)
         res.json(result)
       })
+      .catch(error => console.log(error))
 
     db.close()
   })
@@ -68,6 +69,8 @@ app.put('/profiles/:profileId', (req, res) => {
   MongoClient.connect(URL, { useNewUrlParser: true }).then(client => {
 
     let db = client.db('neo-logikos')
+
+    delete req.body._id
 
     db.collection('profiles').findOneAndUpdate({ _id: new ObjectId(req.params.profileId) }, { $set: req.body })
       .then(result => {
