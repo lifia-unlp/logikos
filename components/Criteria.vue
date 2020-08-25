@@ -41,7 +41,7 @@ import CriterionComponent from '@/components/Criterion.vue'
 const c = {
   name: 'Criteria',
   props: {
-    criteria: Object,
+    criteria: Array,
   },
   data() {
     return {
