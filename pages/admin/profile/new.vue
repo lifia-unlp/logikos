@@ -50,7 +50,7 @@ export default {
       this.profile.removeCriterion(criterion.name)
     },
     saveProfile() {
-      this.$store.commit('addProfile', this.profile)
+      this.$store.dispatch('addProfile', this.profile)
 
       this.$router.push({ name: 'admin-profile' })
     },
