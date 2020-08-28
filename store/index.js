@@ -51,7 +51,7 @@ export const actions = {
         function (data, headers) {
           headers['Content-Type'] = 'application/json'
           return JSON.stringify(data, (k, v) =>
-            k === 'parent' ? undefined : v
+            k === 'parent' || k === 'criterion' ? undefined : v
           )
         },
       ],
@@ -69,7 +69,7 @@ export const actions = {
         function (data, headers) {
           headers['Content-Type'] = 'application/json'
           return JSON.stringify(data, (k, v) =>
-            k === 'parent' ? undefined : v
+            k === 'parent' || k === 'criterion' ? undefined : v
           )
         },
       ],

@@ -1,19 +1,27 @@
+import Preset from '@/models/Preset'
 import _ from 'lodash'
 
 class Criterion {
-  constructor(name, subcriteria = []) {
+  constructor(name, subcriteria = [], preset = null) {
     this.name = name
     this.weight = 0
     this.parent = null
     this.attribute = null
-    this.preset = {}
     this.subcriteria = []
+
+    if (preset) {
+      this._setPreset(preset)
+    }
 
     this._addSubcriteria(subcriteria)
   }
 
   toString() {
     return this.name
+  }
+
+  getAttribute() {
+    return this.attribute ? this.attribute : this.name.toLowerCase()
   }
 
   addSubcriterion(criterion) {
@@ -51,12 +59,6 @@ class Criterion {
     }
   }
 
-  _addSubcriteria(criteria) {
-    for (const criterion of criteria) {
-      this.addSubcriterion(criterion)
-    }
-  }
-
   getComparables() {
     if (this.subcriteria.length) {
       return _.flattenDeep(this.subcriteria.map((sc) => sc.getComparables()))
@@ -65,14 +67,29 @@ class Criterion {
     }
   }
 
+  _setPreset(preset) {
+    preset.criterion = this
+    this.preset = preset
+  }
+
+  _addSubcriteria(criteria) {
+    for (const criterion of criteria) {
+      this.addSubcriterion(criterion)
+    }
+  }
+
   static deserealize(json) {
     const subcriteria = json.subcriteria.map((c) => Criterion.deserealize(c))
+    let preset = null
+
+    if ('preset' in json && !_.isEmpty(json.preset)) {
+      preset = Preset.deserealize(json.preset)
+    }
 
     delete json.subcriteria
+    delete json.preset
 
-    const c = Object.assign(new Criterion(json.name, subcriteria), json)
-
-    return c
+    return Object.assign(new Criterion(json.name, subcriteria, preset), json)
   }
 }
 

@@ -6,6 +6,11 @@ export default class {
     this.criterion = criterion
     this.alternatives = alternatives
     this.dm = new DecisionMatrix(alternatives.length)
+    this.isCompared = false
+
+    if (this.hasPreset()) {
+      this.loadPreset()
+    }
   }
 
   addAlternative(alternative) {
@@ -24,6 +29,10 @@ export default class {
     }
   }
 
+  hasPreset() {
+    return Object.prototype.hasOwnProperty.call(this.criterion, 'preset')
+  }
+
   loadPreset() {
     this.alternatives = this.criterion.preset.sortAlternatives(
       this.alternatives
@@ -32,6 +41,8 @@ export default class {
     this.dm.matrix = this.criterion.preset.getSubDecisionMatrix(
       this.alternatives
     )
+
+    this.isCompared = true
   }
 
   // TODO improve this, maybe add a "absolute weights" boolean argument

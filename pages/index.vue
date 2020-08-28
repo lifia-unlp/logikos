@@ -27,11 +27,19 @@
 
       <ul>
         <li
-          v-for="(criterion, i) in currentProfile.getComparableCriteria()"
+          v-for="(comparison, i) in comparisons"
           :key="i"
           class="inline p-1 m-1 bg-blue-400 rounded text-white font-bold"
         >
-          {{ criterion.name }}
+          <nuxt-link
+            :to="{
+              name: 'compare',
+              params: { id: i },
+            }"
+          >
+            {{ comparison.criterion.name }} -
+            {{ comparison.isCompared ? 'SI' : 'NO' }}
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -42,8 +50,8 @@
       <label class="font-bold">URL</label>
       <input v-model="alternativeURL" class="border rounded" type="text" />
       <button
-        @click="fetchAlternative()"
         class="p-1 m-1 border-2 border-blue-400 rounded text-xs font-bold"
+        @click="fetchAlternative()"
       >
         Search
       </button>
@@ -60,21 +68,40 @@
 
 <script>
 import { mapState } from 'vuex'
-
 import axios from 'axios'
+
+import Comparison from '@/models/Comparison'
 
 export default {
   data() {
     return {
-      selectedProfileId: null,
       alternativeURL: '',
       alternatives: [],
     }
   },
   computed: {
     ...mapState(['profiles']),
+    ...mapState('frontend', ['comparisons']),
+    selectedProfileId: {
+      get() {
+        return this.$store.state.frontend.selectedProfileId
+      },
+      set(value) {
+        this.$store.commit('frontend/setSelectedProfileId', value)
+      },
+    },
     currentProfile() {
       return this.$store.getters.getProfileById(this.selectedProfileId)
+    },
+  },
+  watch: {
+    selectedProfileId(newId, oldId) {
+      this.$store.commit(
+        'frontend/setComparisons',
+        this.currentProfile
+          .getComparableCriteria()
+          .map((c) => new Comparison(this.alternatives, c))
+      )
     },
   },
   created() {
