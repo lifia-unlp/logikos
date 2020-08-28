@@ -20,8 +20,8 @@ class Criterion {
     return this.name
   }
 
-  attribute() {
-    return this.attribute ? this.attribute : this.name.tolowercase()
+  getAttribute() {
+    return this.attribute ? this.attribute : this.name.toLowerCase()
   }
 
   addSubcriterion(criterion) {
