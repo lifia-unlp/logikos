@@ -76,12 +76,11 @@ export default {
   data() {
     return {
       alternativeURL: '',
-      alternatives: [],
     }
   },
   computed: {
     ...mapState(['profiles']),
-    ...mapState('frontend', ['comparisons']),
+    ...mapState('frontend', ['comparisons', 'alternatives']),
     selectedProfileId: {
       get() {
         return this.$store.state.frontend.selectedProfileId
@@ -114,7 +113,7 @@ export default {
           .get(`http://localhost:9000/alternative?url=${this.alternativeURL}`)
           .then((response) => {
             if (!('error' in response.data)) {
-              this.alternatives.push(response.data)
+              this.$store.commit('frontend/addAlternative', response.data)
               this.alternativeURL = ''
             }
           })

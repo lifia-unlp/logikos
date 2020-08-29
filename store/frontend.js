@@ -1,11 +1,24 @@
 export const state = () => ({
   selectedProfileId: null,
+  alternatives: [],
   comparisons: [],
 })
 
 export const mutations = {
   setSelectedProfileId(state, profileId) {
     state.selectedProfileId = profileId
+  },
+
+  setAlternatives(state, alternatives) {
+    state.alternatives = alternatives
+  },
+
+  addAlternative(state, alternative) {
+    state.alternatives.push(alternative)
+  },
+
+  removeAlternative(state, alternativeId) {
+    state.alternatives.splice(alternativeId, 1)
   },
 
   setComparisons(state, comparisons) {
