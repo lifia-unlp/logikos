@@ -30,7 +30,7 @@ export default class {
   }
 
   hasPreset() {
-    return Object.prototype.hasOwnProperty.call(this.criterion, 'preset')
+    return Object.prototype.hasOwnProperty.call(this, 'preset')
   }
 
   loadPreset() {

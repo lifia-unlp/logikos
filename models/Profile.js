@@ -19,6 +19,7 @@ class Profile {
   addCriterion(criterion) {
     if (this._findCriterionIndex(criterion.name)) {
       this.criteria.push(criterion)
+      this._distribuiteWeights()
     }
   }
 
@@ -28,15 +29,22 @@ class Profile {
 
     if (idx !== -1) {
       this.criteria.splice(idx, 1)
+      this._distribuiteWeights()
+    }
+  }
+
+  getComparableCriteria() {
+    return _.flattenDeep(this.criteria.map((c) => c.getComparables()))
+  }
+
+  _distribuiteWeights() {
+    for (const criterion of this.criteria) {
+      criterion.weight = 1 / this.criteria.length
     }
   }
 
   _findCriterionIndex(criterionName) {
     return this.criteria.findIndex((c) => c.name === criterionName)
-  }
-
-  getComparableCriteria() {
-    return _.flattenDeep(this.criteria.map((c) => c.getComparables()))
   }
 
   static deserealize(json) {

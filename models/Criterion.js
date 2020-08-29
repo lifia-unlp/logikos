@@ -30,6 +30,7 @@ class Criterion {
     if (idx === -1) {
       criterion.parent = this
       this.subcriteria.push(criterion)
+      this._distribuiteWeights()
     }
   }
 
@@ -39,6 +40,7 @@ class Criterion {
 
     if (idx !== -1) {
       this.subcriteria.splice(idx, 1)
+      this._distribuiteWeights()
     }
   }
 
@@ -75,6 +77,12 @@ class Criterion {
   _addSubcriteria(criteria) {
     for (const criterion of criteria) {
       this.addSubcriterion(criterion)
+    }
+  }
+
+  _distribuiteWeights() {
+    for (const criterion of this.subcriteria) {
+      criterion.weight = 1 / this.subcriteria.length
     }
   }
 
