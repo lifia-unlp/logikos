@@ -100,12 +100,7 @@ export default {
   },
   watch: {
     selectedProfileId(newId, oldId) {
-      this.$store.commit(
-        'frontend/setComparisons',
-        this.currentProfile
-          .getComparableCriteria()
-          .map((c) => new Comparison(this.alternatives, c))
-      )
+      this.loadComparisons()
     },
   },
   created() {
@@ -119,10 +114,19 @@ export default {
           .then((response) => {
             if (!('error' in response.data)) {
               this.$store.commit('frontend/addAlternative', response.data)
+              this.loadComparisons()
               this.alternativeURL = ''
             }
           })
       }
+    },
+    loadComparisons() {
+      this.$store.commit(
+        'frontend/setComparisons',
+        this.currentProfile
+          .getComparableCriteria()
+          .map((c) => new Comparison(this.alternatives, c))
+      )
     },
   },
 }
