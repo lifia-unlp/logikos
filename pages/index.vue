@@ -32,6 +32,7 @@
           class="inline p-1 m-1 bg-blue-400 rounded text-white font-bold"
         >
           <nuxt-link
+            v-if="alternatives.length >= 2"
             :to="{
               name: 'compare',
               params: { id: i },
@@ -40,6 +41,10 @@
             {{ comparison.criterion.name }} -
             {{ comparison.isCompared ? 'SI' : 'NO' }}
           </nuxt-link>
+
+          <template v-else>
+            {{ comparison.criterion.name }}
+          </template>
         </li>
       </ul>
     </div>
