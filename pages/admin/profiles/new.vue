@@ -52,7 +52,7 @@ export default {
     saveProfile() {
       this.$store.dispatch('addProfile', this.profile)
 
-      this.$router.push({ name: 'admin-profile' })
+      this.$router.push({ name: 'admin-profiles' })
     },
   },
 }

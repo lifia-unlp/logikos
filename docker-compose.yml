@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+  nuxt:
+    image: node:12
+    working_dir: /app
+    command: ['npm', 'run', 'dev']
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+
+  server:
+    image: node:12
+    working_dir: /app
+    command: ['npm', 'run', 'dev']
+    volumes:
+      - ./server:/app
+    ports:
+      - 9000:9000
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data: ~

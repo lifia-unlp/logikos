@@ -11,16 +11,18 @@ const app = express()
 const cors = require('cors')
 const port = 9000
 
-const MONGODB_URL = 'mongodb://127.0.0.1:27017'
+const MONGODB_URL = 'mongodb://mongo:27017'
 
 const site_templates = require('./site_templates.json')
 
 app.use(cors())
 app.use(express.json())
 
+app.get('/', (req, res) => res.send('Neo Logikos'))
+
 app.get('/profiles', (req, res) => {
 
-  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true }).then(client => {
+  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
 
     let db = client.db('neo-logikos')
 
@@ -32,8 +34,6 @@ app.get('/profiles', (req, res) => {
         res.json(result)
       })
       .catch(error => console.log(error))
-
-    db.close()
   })
 
 })
@@ -42,21 +42,19 @@ app.post('/profiles', (req, res) => {
 
   console.log("Create profile: ", req.body)
 
-  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true }).then(client => {
+  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
 
     let db = client.db('neo-logikos')
 
     db.collection('profiles').insertOne(req.body)
-      .then(result => console.log(result))
+      .then(cmdResult => console.log(cmdResult, cmdResult.insertedCount, cmdResult.ops))
       .catch(error => console.log(error))
-
-    db.close()
   })
 })
 
 app.get('/profiles/:profileId', (req, res) => {
 
-  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true }).then(client => {
+  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
 
     let db = client.db('neo-logikos')
 
@@ -73,16 +71,16 @@ app.get('/profiles/:profileId', (req, res) => {
 
 app.put('/profiles/:profileId', (req, res) => {
 
-  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true }).then(client => {
+  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
 
     let db = client.db('neo-logikos')
 
     delete req.body._id
 
     db.collection('profiles').findOneAndUpdate({ _id: new ObjectId(req.params.profileId) }, { $set: req.body })
-      .then(result => {
-        console.log(result)
-        res.json(result)
+      .then(cmdResult => {
+        console.log(cmdResult)
+        res.json(cmdResult)
       })
       .catch(error => console.log(error))
 
@@ -93,7 +91,7 @@ app.put('/profiles/:profileId', (req, res) => {
 
 app.delete('/profiles/:profileId', (req, res) => {
 
-  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true }).then(client => {
+  MongoClient.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
 
     let db = client.db('neo-logikos')
 
