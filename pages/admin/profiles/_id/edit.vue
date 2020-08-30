@@ -60,7 +60,7 @@ export default {
     saveProfile() {
       this.$store.dispatch('updateProfile', this.profile)
 
-      this.$router.push({ name: 'admin-profile' })
+      this.$router.push({ name: 'admin-profiles' })
     },
   },
 }
