@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <h1 class="text-4xl">{{ profile.name }}</h1>
+    <h1 class="title">"{{ profile.name }}"</h1>
 
     <h2 class="text-xl font-bold mt-4">Criteria</h2>
     <Criteria :criteria="profile.criteria"></Criteria>
 
-    <nuxt-link class="py-1 px-2 rounded bg-gray-400 font-bold" to="/">
+    <nuxt-link class="default-button" to="/">
       back
     </nuxt-link>
   </div>
@@ -20,3 +20,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.title {
+  @apply text-5xl text-logikos italic;
+}
+</style>

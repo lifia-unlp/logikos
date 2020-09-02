@@ -5,7 +5,18 @@
 ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 */
 module.exports = {
-  theme: {},
+  theme: {
+    extend: {
+      colors: {
+        logikos: {
+          light: '#434343',
+          default: '#646464',
+          dark: '#949494',
+          orange: '#FF7A59'
+        }
+      }
+    }
+  },
   variants: {},
   plugins: [],
   purge: {

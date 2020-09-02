@@ -1,31 +1,33 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th colspan="3">Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr v-for="(profile, key) in profiles" :key="key">
-        <td>{{ profile.name }}</td>
-        <td>{{ profile.description }}</td>
-        <td>
-          <nuxt-link
-            :to="{
-              name: 'admin-profiles-id-edit',
-              params: { id: profile._id },
-            }"
+  <div>
+    <div v-for="(profile, key) in profiles" :key="key" class="profile-box">
+      <div class="w-4/6">
+        <p class="profile-name">{{ profile.name }}</p>
+        <p class="profile-description">{{ profile.description }}</p>
+        <ul>
+          <li
+            v-for="(criterion, i) in profile.criteria"
+            :key="i"
+            class="criterion-pill"
           >
-            edit
-          </nuxt-link>
-          <a @click="deleteProfile(profile._id)">delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            {{ criterion.name }} - {{ criterion.absoluteWeight() * 100 }}%
+          </li>
+        </ul>
+      </div>
+
+      <div class="w-2/6">
+        <nuxt-link
+          :to="{
+            name: 'admin-profiles-id-edit',
+            params: { id: profile._id },
+          }"
+        >
+          edit
+        </nuxt-link>
+        <a @click="deleteProfile(profile._id)">delete</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -46,3 +48,21 @@ export default {
   },
 }
 </script>
+
+<style>
+.profile-box {
+  @apply pl-3 border-l-2 border-logikos-orange flex content-between items-center;
+}
+
+.profile-name {
+  @apply text-2xl text-logikos-light font-light;
+}
+
+.profile-description {
+  @apply text-logikos-dark;
+}
+
+.criterion-pill {
+  @apply inline px-2 py-1 mr-2 rounded bg-logikos-orange text-xs text-white font-bold;
+}
+</style>

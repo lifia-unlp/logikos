@@ -1,5 +1,5 @@
 <template>
-  <div class="border-solid border-2">
+  <div class="border-solid border-2 mt-2 p-4">
     <p>Comparison</p>
     <div class="flex mb-4">
       <div class="w-1/2">
@@ -19,10 +19,7 @@
         <p>CR: {{ comparison.dm.consistencyRatio() }}</p>
       </div>
     </div>
-    <button
-      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
-      @click="save"
-    >
+    <button class="button-default" @click="save">
       Save comparison
     </button>
   </div>

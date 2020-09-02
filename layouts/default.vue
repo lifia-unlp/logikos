@@ -1,10 +1,20 @@
 <template>
   <div>
-    <Nuxt />
+    <div class="flex border-b border-gray-200 items-center h-12">
+      <nav class="w-full max-w-screen-xl relative mx-auto px-6">
+        <p class="text-logikos inline">Neo Logikos</p>
+        <nuxt-link class="px-3" to="/">Frontend</nuxt-link>
+        <nuxt-link class="px-3" to="/admin/profiles">Admin</nuxt-link>
+      </nav>
+    </div>
+    <div class="lg:container lg:mx-auto px-4">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
 <style>
+/*
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -16,14 +26,14 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
+*/
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
 }
-
+/*
 .button--green {
   display: inline-block;
   border-radius: 4px;
@@ -52,4 +62,5 @@ html {
   color: #fff;
   background-color: #35495e;
 }
+*/
 </style>
