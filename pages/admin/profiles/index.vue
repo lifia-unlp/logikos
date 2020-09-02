@@ -1,10 +1,23 @@
 <template>
-  <div class="container">
+  <div>
     <h1 class="title">Profiles</h1>
 
-    <ProfilesTable :profiles="profiles"></ProfilesTable>
+    <div>
+      <input
+        v-model="searchInput"
+        class="searchInput"
+        type="text"
+        placeholder="Search..."
+      />
+    </div>
 
-    <nuxt-link to="/admin/profiles/new">New Profile</nuxt-link>
+    <ProfilesTable :profiles="filteredProfiles"></ProfilesTable>
+
+    <div class="flex justify-end">
+      <nuxt-link class="button-new" to="/admin/profiles/new">
+        new profile
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -12,44 +25,35 @@
 import { mapState } from 'vuex'
 
 export default {
-  created() {
-    this.$store.dispatch('fetchProfiles')
+  data() {
+    return {
+      searchInput: '',
+    }
   },
   computed: {
     ...mapState(['profiles']),
+    filteredProfiles() {
+      return this.profiles.filter((profile) =>
+        profile.name.toLowerCase().includes(this.searchInput.toLowerCase())
+      )
+    },
+  },
+  created() {
+    this.$store.dispatch('fetchProfiles')
   },
 }
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-}
-
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 300;
-  font-size: 50px;
-  color: #35495e;
-  letter-spacing: 1px;
+  @apply text-5xl text-logikos;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.searchInput {
+  @apply w-full mx-auto my-4 px-2 py-1 border rounded italic;
 }
 
-.links {
-  padding-top: 15px;
+.button-new {
+  @apply pl-1 border-l-2 border-logikos-orange text-logikos-light italic;
 }
 </style>

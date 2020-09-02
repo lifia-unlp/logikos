@@ -8,15 +8,12 @@
     >
     </AdminCriterion>
 
-    <button
-      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
-      @click="toggleAdding"
-    >
+    <button class="button-default mt-1" @click="toggleAdding">
       Add
     </button>
     <button
       v-if="criteria.length > 0"
-      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
+      class="button-default mt-1"
       @click="toggleCompare"
     >
       Compare
@@ -89,3 +86,9 @@ c.components = { AdminCriterion }
 
 export default c
 </script>
+
+<style>
+.button-default {
+  @apply py-1 px-2 border-2 rounded border-orange-400 text-xs;
+}
+</style>

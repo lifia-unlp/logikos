@@ -1,64 +1,45 @@
 <template>
-  <div class="container">
-    <h1 class="text-4xl">Neo-logikos</h1>
-
-    <div class="mt-2">
-      <label class="font-bold">Profile</label>
-      <select v-model="selectedProfileId">
+  <div class="w-1/2">
+    <div class="my-2">
+      <label>Profile</label>
+      <select v-model="selectedProfileId" class="profile-select">
         <option v-for="(profile, i) in profiles" :key="i" :value="profile._id">
           {{ profile.name }}
         </option>
       </select>
+      <nuxt-link
+        v-if="selectedProfileId"
+        class="default-button"
+        :to="{
+          name: 'profiles-id',
+          params: { id: currentProfile._id },
+        }"
+      >
+        Ver
+      </nuxt-link>
     </div>
 
     <div v-if="selectedProfileId">
-      <p>
-        Perfil seleccionado: {{ currentProfile.name }}
-        <nuxt-link
-          class="cursor-default"
-          :to="{
-            name: 'profiles-id',
-            params: { id: currentProfile._id },
-          }"
-        >
-          (ver)
-        </nuxt-link>
-      </p>
-
-      <ul>
-        <li
-          v-for="(comparison, i) in comparisons"
-          :key="i"
-          class="inline p-1 m-1 bg-blue-400 rounded text-white font-bold"
-        >
-          <nuxt-link
-            v-if="alternatives.length >= 2"
-            :to="{
-              name: 'compare',
-              params: { id: i },
-            }"
-          >
-            {{ comparison.criterion.name }} -
-            {{ comparison.isCompared ? 'SI' : 'NO' }}
-          </nuxt-link>
-
-          <template v-else>
-            {{ comparison.criterion.name }}
-          </template>
-        </li>
-      </ul>
+      <Comparison
+        v-for="(comparison, i) in comparisons"
+        :key="i"
+        :id="i"
+        :comparison="comparison"
+        :canCompare="alternatives.length >= 2"
+      >
+      </Comparison>
     </div>
 
     <div class="mt-4">
-      <h1 class="text-lg font-bold">Celulares</h1>
+      <h1 class="text-2xl text-logikos">Phones</h1>
 
-      <label class="font-bold">URL</label>
-      <input v-model="alternativeURL" class="border rounded" type="text" />
-      <button
-        class="p-1 m-1 border-2 border-blue-400 rounded text-xs font-bold"
-        @click="fetchAlternative()"
-      >
-        Search
+      <input
+        v-model="alternativeUrl"
+        class="border rounded px-2 py-1 w-2/3"
+        type="text"
+      />
+      <button class="default-button" @click="fetchAlternative()">
+        Add
       </button>
     </div>
 
@@ -80,7 +61,7 @@ import Comparison from '@/models/Comparison'
 export default {
   data() {
     return {
-      alternativeURL: '',
+      alternativeUrl: '',
     }
   },
   computed: {
@@ -108,14 +89,14 @@ export default {
   },
   methods: {
     fetchAlternative() {
-      if (!this.alternatives.find((a) => a.url === this.alternativeURL)) {
+      if (!this.alternatives.find((a) => a.url === this.alternativeUrl)) {
         axios
-          .get(`http://localhost:9000/alternative?url=${this.alternativeURL}`)
+          .get(`http://localhost:9000/alternative?url=${this.alternativeUrl}`)
           .then((response) => {
             if (!('error' in response.data)) {
               this.$store.commit('frontend/addAlternative', response.data)
               this.loadComparisons()
-              this.alternativeURL = ''
+              this.alternativeUrl = ''
             }
           })
       }
@@ -131,3 +112,21 @@ export default {
   },
 }
 </script>
+
+<style>
+.profile-select {
+  @apply appearance-none w-2/3 bg-white border border-gray-400 px-2 py-1 pr-8 rounded shadow leading-tight;
+}
+
+.profile-select:hover {
+  @apply border-gray-500;
+}
+
+.profile-select:focus {
+  @apply outline-none shadow-outline;
+}
+
+.default-button {
+  @apply px-2 py-1 border rounded;
+}
+</style>

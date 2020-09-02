@@ -2,13 +2,21 @@
   <div class="container">
     <h1 class="title">Edit Profile</h1>
 
-    <label class="block font-bold">Name</label>
-    <input v-model="profile.name" class="border rounded" type="text" />
+    <div class="form-field">
+      <label class="form-field-label">Name</label>
+      <input v-model="profile.name" class="form-field-input" type="text" />
+    </div>
 
-    <label class="block font-bold">Description</label>
-    <input v-model="profile.description" class="border rounded" type="text" />
+    <div class="form-field">
+      <label class="form-field-label">Description</label>
+      <input
+        v-model="profile.description"
+        class="form-field-input"
+        type="text"
+      />
+    </div>
 
-    <h2 class="text-2xl">Criteria</h2>
+    <h2 class="text-4xl text-logikos">Criteria</h2>
 
     <AdminCriteria
       :criteria="profile.criteria"
@@ -72,29 +80,4 @@ export default {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 300;
-  font-size: 50px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

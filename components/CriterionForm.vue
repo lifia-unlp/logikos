@@ -1,8 +1,8 @@
 <template>
-  <div class="mt-2 p-4 order-solid border-2 border-indigo-300">
-    <div>
-      <label class="block font-bold">Name</label>
-      <input v-model="name" class="border rounded" type="text" />
+  <div class="mt-2 p-4 order-solid border-2 border-gray-200">
+    <div class="form-field">
+      <label class="form-field-label">Name</label>
+      <input v-model="name" class="form-field-input" type="text" />
     </div>
 
     <label>Set attribute?</label>
@@ -13,23 +13,23 @@
       <input v-model="attribute" class="border rounded" type="text" />
     </template>
 
-    <h3 class="text-xl m-2 text-indigo-800">Preset</h3>
+    <h3 class="text-xl m-2 text-logikos">Preset</h3>
 
     <div class="pl-4">
-      <label class="block font-bold">Value</label>
-      <input v-model="presetValue" class="border rounded" type="text" />
-      <button
-        class="py-1 px-2 border-2 rounded border-indigo-300 text-sm"
-        @click="addPresetValue"
-      >
-        Add value
-      </button>
-      <button
-        class="py-1 px-2 border-2 rounded border-indigo-300 text-sm"
-        @click="comparePreset"
-      >
-        Compare
-      </button>
+      <div class="form-field">
+        <label class="form-field-label">Value</label>
+        <input v-model="presetValue" class="form-field-input" type="text" />
+
+        <div class="col-span-1">
+          <button class="button-default" @click="addPresetValue">
+            Add value
+          </button>
+
+          <button class="button-default" @click="comparePreset">
+            Compare
+          </button>
+        </div>
+      </div>
 
       <ul>
         <li v-for="(value, key) in presetValues" :key="key" class="inline">
@@ -45,10 +45,7 @@
       </ComparisonC>
     </div>
 
-    <button
-      class="py-1 px-2 border-2 rounded border-indigo-300 text-xs"
-      @click="addCriterion"
-    >
+    <button class="button-default mt-2" @click="addCriterion">
       Save criterion
     </button>
   </div>

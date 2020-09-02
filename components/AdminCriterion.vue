@@ -1,7 +1,7 @@
 <template>
-  <div class="ml-8">
-    <li class="text-lg">
-      {{ criterion.name }} ({{ criterion.absoluteWeight() }}%)
+  <div class="criterion">
+    <li class="criterion-name">
+      {{ criterion.name }} ({{ criterion.absoluteWeight() * 100 }}%)
       <a @click="removeCriterion(criterion)">x</a>
     </li>
 
@@ -38,3 +38,13 @@ export default {
   },
 }
 </script>
+
+<style>
+.criterion {
+  @apply ml-8;
+}
+
+.criterion-name {
+  @apply text-2xl font-light;
+}
+</style>

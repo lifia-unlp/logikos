@@ -2,13 +2,21 @@
   <div class="container">
     <h1 class="title">New Profile</h1>
 
-    <label class="block font-bold">Name</label>
-    <input v-model="profile.name" class="border rounded" type="text" />
+    <div class="form-field">
+      <label class="form-field-label">Name</label>
+      <input v-model="profile.name" class="form-field-input" type="text" />
+    </div>
 
-    <label class="block font-bold">Description</label>
-    <input v-model="profile.description" class="border rounded" type="text" />
+    <div class="form-field">
+      <label class="form-field-label">Description</label>
+      <input
+        v-model="profile.description"
+        class="form-field-input"
+        type="text"
+      />
+    </div>
 
-    <h2 class="text-2xl">Criteria</h2>
+    <h2 class="text-4xl text-logikos">Criteria</h2>
 
     <AdminCriteria
       :criteria="profile.criteria"
@@ -64,21 +72,16 @@ export default {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
+
+.form-field {
+  @apply grid grid-cols-6 gap-1 mt-2;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 300;
-  font-size: 50px;
-  color: #35495e;
-  letter-spacing: 1px;
+.form-field-label {
+  @apply col-span-1 px-2 border-l-2 border-logikos-orange;
 }
 
-.links {
-  padding-top: 15px;
+.form-field-input {
+  @apply col-span-3 border rounded;
 }
 </style>
