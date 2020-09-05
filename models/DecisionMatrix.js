@@ -79,6 +79,20 @@ export default class {
     }
   }
 
+  autocomplete2(referenceRow = 0) {
+    for (let row = 0; row < this.matrix.length; row++) {
+      for (let col = row + 1; col < this.matrix.length; col++) {
+        if (row !== referenceRow) {
+          this.setCell(
+            row,
+            col,
+            this.matrix[referenceRow][col] / this.matrix[referenceRow][row]
+          )
+        }
+      }
+    }
+  }
+
   consistencyRatio() {
     return this.consistencyIndex() / this.randomConsistencyIndex()
   }

@@ -37,12 +37,12 @@
         </li>
       </ul>
 
-      <ComparisonC
+      <ComparisonForm
         v-if="comparing"
         :comparison="comparison"
         @comparison:rank="weightCriteria"
       >
-      </ComparisonC>
+      </ComparisonForm>
     </div>
 
     <button class="button-default mt-2" @click="addCriterion">
