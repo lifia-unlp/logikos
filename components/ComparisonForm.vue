@@ -26,13 +26,15 @@
 </template>
 
 <script>
-import comparisonChartConfig from '@/charts/comparisonChartConfig'
+import comparisonChartConfig, {
+  convertChartToAHP,
+  convertAHPToChart,
+} from '@/charts/comparisonChartConfig'
 
 import Chart from 'chart.js'
 import 'chartjs-plugin-dragdata'
 
 export default {
-  name: 'ComparisonC',
   props: {
     comparison: {
       type: Object,
@@ -57,7 +59,9 @@ export default {
     this.lineChart.data.labels = this.comparison.alternatives.map((a) =>
       a.toString()
     )
-    this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0]
+    this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0].map(
+      convertAHPToChart
+    )
 
     this.lineChart.update()
   },
@@ -69,8 +73,8 @@ export default {
     },
 
     lineChartDragAction(e, datasetIndex, column, value) {
-      this.comparison.dm.setCell(0, column, value)
-      this.comparison.dm.autocomplete()
+      this.comparison.dm.setCell(0, column, convertChartToAHP(value))
+      this.comparison.dm.autocomplete2()
     },
 
     save() {
