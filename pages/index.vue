@@ -49,6 +49,14 @@
       :phone="alternative"
     >
     </Phone>
+
+    <nuxt-link
+      to="/rank"
+      v-if="alternatives.length >= 2 && selectedProfileId"
+      class="default-button"
+    >
+      Rank!
+    </nuxt-link>
   </div>
 </template>
 
