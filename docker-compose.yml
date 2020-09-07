@@ -13,6 +13,8 @@ services:
     image: node:12
     working_dir: /app
     command: ['npm', 'run', 'dev']
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
     volumes:
       - ./server:/app
     ports:
