@@ -9,9 +9,9 @@ const ObjectId = require('mongodb').ObjectId
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const port = 9000
+const port = process.env.PORT || 9000
 
-const MONGODB_URL = 'mongodb://mongo:27017'
+const MONGODB_URL = process.env.MONGO_URL
 
 const site_templates = require('./site_templates.json')
 
