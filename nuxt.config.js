@@ -48,6 +48,7 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/fontawesome'
   ],
   /*
    ** Nuxt.js modules
@@ -61,6 +62,17 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+
+  /*
+   ** fontawesome module configuration
+   */
+  fontawesome: {
+    icons: {
+      solid: true,
+      regular: true,
+    }
+  },
+
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
