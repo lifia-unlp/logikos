@@ -2,12 +2,16 @@
   <div>
     <h1 class="title">Profiles</h1>
 
-    <div>
+    <div class="searchInput">
       <input
         v-model="searchInput"
-        class="searchInput"
+        class="w-11/12 bg-transparent"
         type="text"
         placeholder="Search..."
+      />
+      <font-awesome-icon
+        :icon="['fas', 'filter']"
+        class="ml-auto text-logikos-dark text-opacity-25"
       />
     </div>
 
@@ -50,7 +54,7 @@ export default {
 }
 
 .searchInput {
-  @apply w-full mx-auto my-4 px-2 py-1 border rounded italic;
+  @apply w-full mx-auto my-4 px-2 py-1 border rounded italic bg-white;
 }
 
 .button-new {

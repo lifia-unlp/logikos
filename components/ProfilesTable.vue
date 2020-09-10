@@ -22,9 +22,17 @@
             params: { id: profile._id },
           }"
         >
-          edit
+          <font-awesome-icon
+            :icon="['fas', 'pencil-alt']"
+            class="mx-1 text-logikos-dark"
+          />
         </nuxt-link>
-        <a @click="deleteProfile(profile._id)">delete</a>
+        <a @click="deleteProfile(profile._id)">
+          <font-awesome-icon
+            :icon="['far', 'trash-alt']"
+            class="mx-1 text-logikos-dark cursor-pointer"
+          />
+        </a>
       </div>
     </div>
   </div>
