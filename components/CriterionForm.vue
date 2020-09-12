@@ -34,6 +34,11 @@
       <ul>
         <li v-for="(value, key) in presetValues" :key="key" class="inline">
           {{ value }}
+          <font-awesome-icon
+            :icon="['far', 'trash-alt']"
+            @click="removePresetValue(key)"
+            class="mr-1 text-xs text-logikos-dark cursor-pointer"
+          />
         </li>
       </ul>
 
@@ -79,6 +84,9 @@ export default {
     addPresetValue() {
       this.presetValues.push(this.presetValue)
       this.presetValue = ''
+    },
+    removePresetValue(idx) {
+      this.presetValues.splice(idx, 1)
     },
     comparePreset() {
       this.comparing = !this.comparing
