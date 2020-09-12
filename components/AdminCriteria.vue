@@ -8,14 +8,17 @@
     >
     </AdminCriterion>
 
-    <button class="button-default mt-1" @click="toggleAdding">
+    <button class="mx-1 text-logikos-dark cursor-pointer" @click="toggleAdding">
+      <font-awesome-icon :icon="['fas', 'plus']" class="text-sm" />
       Add
     </button>
+
     <button
-      v-if="criteria.length > 0"
-      class="button-default mt-1"
+      v-if="criteria.length > 1"
       @click="toggleCompare"
+      class="mx-1 text-logikos-dark cursor-pointer"
     >
+      <font-awesome-icon :icon="['fas', 'chart-line']" class="text-sm" />
       Compare
     </button>
 

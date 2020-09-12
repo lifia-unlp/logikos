@@ -2,7 +2,11 @@
   <div class="criterion">
     <li class="criterion-name">
       {{ criterion.name }} ({{ criterion.absoluteWeight() * 100 }}%)
-      <a @click="removeCriterion(criterion)">x</a>
+      <font-awesome-icon
+        :icon="['far', 'trash-alt']"
+        @click="removeCriterion(criterion)"
+        class="mx-1 text-logikos-dark text-base cursor-pointer"
+      />
     </li>
 
     <AdminCriteria
