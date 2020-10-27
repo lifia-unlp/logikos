@@ -13,7 +13,10 @@ module.exports = {
           default: '#646464',
           dark: '#949494',
           orange: '#FF7A59'
-        }
+        },
+        primary: '#E9604E',
+        secondary: '#17273E',
+        accent: '#71BBE8'
       }
     }
   },
