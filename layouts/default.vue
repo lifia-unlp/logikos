@@ -1,12 +1,23 @@
 <template>
   <div>
-    <div class="flex border-b border-gray-200 items-center h-12">
+    <div class="flex border-b-2 border-primary items-center h-12">
       <nav class="w-full max-w-screen-xl relative mx-auto px-6">
-        <p class="text-logikos inline">Neo Logikos</p>
-        <nuxt-link class="px-3" to="/">Frontend</nuxt-link>
-        <nuxt-link class="px-3" to="/admin/profiles">Admin</nuxt-link>
+        <p class="text-lg text-primary inline">Neo Logikos</p>
+        <nuxt-link
+          class="px-3 text-secondary text-xs font-normal tracking-wider"
+          to="/"
+        >
+          FRONTEND
+        </nuxt-link>
+        <nuxt-link
+          class="px-3 text-secondary text-xs font-normal tracking-wider"
+          to="/admin/profiles"
+        >
+          ADMIN
+        </nuxt-link>
       </nav>
     </div>
+
     <div class="lg:container lg:mx-auto px-4">
       <Nuxt />
     </div>
