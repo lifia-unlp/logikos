@@ -16,7 +16,8 @@ module.exports = {
         },
         primary: '#E9604E',
         secondary: '#17273E',
-        accent: '#71BBE8'
+        accent: '#71BBE8',
+        whitesmoke: '#f4f4f4'
       }
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex border-b-2 border-primary items-center h-12">
+    <div class="flex items-center h-12 bg-white">
       <nav class="w-full max-w-screen-xl relative mx-auto px-6">
         <p class="text-lg text-primary inline">Neo Logikos</p>
         <nuxt-link
@@ -25,6 +25,9 @@
 </template>
 
 <style>
+html {
+  @apply .bg-whitesmoke;
+}
 /*
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
