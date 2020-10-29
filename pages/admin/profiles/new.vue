@@ -2,40 +2,47 @@
   <div class="container">
     <h1 class="title">New Profile</h1>
 
-    <div class="form-field">
-      <label class="form-field-label">Name</label>
-      <input v-model="profile.name" class="form-field-input" type="text" />
+    <div class="grid grid-cols-12 gap-6">
+      <div class="col-span-8 box">
+        <h2 class="text-secondary text-xl">Basic Information</h2>
+        <div class="form-field">
+          <label class="form-field-label">NAME</label>
+          <input v-model="profile.name" class="form-field-input" type="text" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-field-label">DESCRIPTION</label>
+          <textarea
+            v-model="profile.description"
+            class="form-field-input resize-none"
+          >
+          </textarea>
+        </div>
+      </div>
+
+      <div class="col-span-8 box">
+        <h2 class="text-secondary text-xl">Criteria</h2>
+
+        <AdminCriteria
+          :criteria="profile.criteria"
+          @criterion:add="addCriterion"
+          @criterion:remove="removeCriterion"
+        ></AdminCriteria>
+      </div>
     </div>
-
-    <div class="form-field">
-      <label class="form-field-label">Description</label>
-      <input
-        v-model="profile.description"
-        class="form-field-input"
-        type="text"
-      />
-    </div>
-
-    <h2 class="text-4xl text-logikos">Criteria</h2>
-
-    <AdminCriteria
-      :criteria="profile.criteria"
-      @criterion:add="addCriterion"
-      @criterion:remove="removeCriterion"
-    ></AdminCriteria>
 
     <div class="mt-8">
       <button
-        class="py-1 px-2 rounded bg-green-400 text-white font-bold"
+        class="py-1 px-2 bg-primary text-white font-bold"
         @click="saveProfile"
       >
         Save
       </button>
       <nuxt-link
-        class="py-1 px-2 rounded bg-red-400 text-white font-bold"
+        class="py-1 px-2 bg-secondary text-white font-bold"
         to="/admin/profiles"
       >
-        back
+        Back
       </nuxt-link>
     </div>
   </div>
@@ -73,15 +80,19 @@ export default {
 }
 */
 
+.box {
+  @apply mb-8 px-5 py-4 bg-white shadow-lg;
+}
+
 .form-field {
-  @apply grid grid-cols-6 gap-1 mt-2;
+  @apply mt-3;
 }
 
 .form-field-label {
-  @apply col-span-1 px-2 border-l-2 border-logikos-orange;
+  @apply block text-sm text-primary tracking-wider;
 }
 
 .form-field-input {
-  @apply col-span-3 border rounded;
+  @apply py-1 px-2 w-full border border-gray-300 bg-white text-sm;
 }
 </style>
