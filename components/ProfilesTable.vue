@@ -32,13 +32,13 @@
           >
             <font-awesome-icon
               :icon="['fas', 'pencil-alt']"
-              class="mx-1 text-accent"
+              class="mx-1 text-gray-400 hover:text-accent"
             />
           </nuxt-link>
           <a @click="deleteProfile(profile._id)">
             <font-awesome-icon
               :icon="['far', 'trash-alt']"
-              class="mx-1 text-accent cursor-pointer"
+              class="mx-1 text-gray-400 hover:text-accent cursor-pointer"
             />
           </a>
         </td>

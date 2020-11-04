@@ -8,18 +8,21 @@
     >
     </AdminCriterion>
 
-    <button class="mx-1 text-logikos-dark cursor-pointer" @click="toggleAdding">
-      <font-awesome-icon :icon="['fas', 'plus']" class="text-sm" />
-      Add
-    </button>
-
     <button
       v-if="criteria.length > 1"
-      @click="toggleCompare"
       class="mx-1 text-logikos-dark cursor-pointer"
+      @click="toggleCompare"
     >
       <font-awesome-icon :icon="['fas', 'chart-line']" class="text-sm" />
       Compare
+    </button>
+
+    <button
+      class="mx-1 text-xs text-accent cursor-pointer"
+      @click="toggleAdding"
+    >
+      <font-awesome-icon :icon="['fas', 'plus']" />
+      Add criterion
     </button>
 
     <CriterionForm v-if="adding" @criterion:add="addCriterion"></CriterionForm>

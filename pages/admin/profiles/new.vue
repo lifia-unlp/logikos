@@ -21,13 +21,15 @@
       </div>
 
       <div class="col-span-8 box">
-        <h2 class="text-secondary text-xl">Criteria</h2>
+        <h2 class="text-secondary text-xl mb-4">Criteria</h2>
 
-        <AdminCriteria
-          :criteria="profile.criteria"
-          @criterion:add="addCriterion"
-          @criterion:remove="removeCriterion"
-        ></AdminCriteria>
+        <AdminCriterion2
+          v-for="(criterion, i) in profile.criteria"
+          :key="i"
+          :criterion="criterion"
+          @criterion:remove="removeCriterion(criterion)"
+        >
+        </AdminCriterion2>
       </div>
     </div>
 
