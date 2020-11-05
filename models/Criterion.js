@@ -55,7 +55,7 @@ class Criterion {
   // TODO cambiar esta regla de lintin de mierda
   absoluteWeight() {
     if (this.parent != null) {
-      return this.weight * this.parent.weight
+      return this.weight * this.parent.absoluteWeight()
     } else {
       return this.weight
     }
