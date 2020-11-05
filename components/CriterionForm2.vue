@@ -2,7 +2,7 @@
   <div>
     <div class="form-field">
       <label class="form-field-label">NAME</label>
-      <input v-model="name" class="form-field-input" type="text" />
+      <input v-model="criterion.name" class="form-field-input" type="text" />
     </div>
 
     <div class="form-field">
@@ -16,7 +16,11 @@
 
     <div v-if="setAttribute" class="form-field">
       <label class="form-field-label">ATTRIBUTE</label>
-      <input v-model="attribute" class="form-field-input" type="text" />
+      <input
+        v-model="criterion.attribute"
+        class="form-field-input"
+        type="text"
+      />
     </div>
 
     <p class="mt-4 text-lg text-secondary">Preset</p>
@@ -58,23 +62,35 @@
 
 <script>
 import Criterion from '@/models/Criterion'
+import _ from 'lodash'
 
 export default {
   name: 'CriterionForm2',
+  props: {
+    originalCriterion: {
+      type: Object,
+      default() {
+        return new Criterion('')
+      },
+    },
+  },
   data() {
     return {
       criterion: new Criterion(''),
-      name: '',
-      setAttribute: false,
-      attribute: '',
+      // name: '',
+      setAttribute: Boolean(this.originalCriterion.attribute),
+      // attribute: '',
       presetValue: '',
       presetValues: [],
     }
   },
+  mounted() {
+    this.criterion = _.cloneDeep(this.originalCriterion)
+  },
   methods: {
     addCriterion() {
-      this.criterion.name = this.name
-      this.criterion.attribute = this.attribute
+      // this.criterion.name = this.name
+      // this.criterion.attribute = this.attribute
 
       this.$emit('criterion:add', this.criterion)
     },

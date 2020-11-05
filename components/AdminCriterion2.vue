@@ -25,6 +25,7 @@
           <font-awesome-icon
             :icon="['fas', 'pencil-alt']"
             class="text-gray-400 hover:text-accent text-base cursor-pointer"
+            @click="edit()"
           />
           <font-awesome-icon
             :icon="['far', 'trash-alt']"
@@ -43,6 +44,7 @@
         :showActions="showActions"
         @criterion:remove="removeSubcriterion(subcriterion)"
         @criterion:new="propagateNewCriterion"
+        @criterion:edit="propagateEditCriterion"
         @comparison:new="propagateCompare"
       >
       </AdminCriterion2>
@@ -71,6 +73,9 @@ export default {
     remove() {
       this.$emit('criterion:remove', this.criterion)
     },
+    edit() {
+      this.$emit('criterion:edit', this.criterion)
+    },
     removeSubcriterion(subcriterion) {
       this.criterion.removeSubcriterion(subcriterion.name)
     },
@@ -82,6 +87,9 @@ export default {
     },
     propagateNewCriterion(criterion) {
       this.$emit('criterion:new', criterion)
+    },
+    propagateEditCriterion(criterion) {
+      this.$emit('criterion:edit', criterion)
     },
     propagateCompare(criterion) {
       this.$emit('comparison:new', criterion)

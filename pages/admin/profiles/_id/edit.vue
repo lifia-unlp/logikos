@@ -64,6 +64,7 @@
           :criterion="criterion"
           :showActions="!(showCriterionForm || showComparisonForm)"
           @criterion:remove="removeCriterion(criterion)"
+          @criterion:edit="editCriterion"
           @criterion:new="newSubcriterion"
           @comparison:new="compareSubcriteria"
         >
@@ -93,6 +94,7 @@
         </div>
 
         <CriterionForm2
+          :originalCriterion="criterion ? criterion : undefined"
           @criterion:add="addCriterion"
           @comparison:new:preset="comparePreset"
         >
@@ -149,6 +151,7 @@ export default {
       showCriterionForm: false,
       showComparisonForm: false,
       parentCriterion: null,
+      criterion: null,
       comparison: null,
       comparisonType: null,
     }
@@ -186,13 +189,20 @@ export default {
       this.showCriterionForm = true
       this.parentCriterion = parentCriterion
     },
+    editCriterion(criterion) {
+      this.criterion = criterion
+      this.showCriterionForm = true
+    },
     addCriterion(criterion) {
-      if (this.parentCriterion !== null) {
+      if (this.criterion !== null) {
+        Object.assign(this.criterion, criterion)
+      } else if (this.parentCriterion !== null) {
         this.parentCriterion.addSubcriterion(criterion)
       } else {
         this.profile.addCriterion(criterion)
       }
 
+      this.criterion = null
       this.parentCriterion = null
       this.showCriterionForm = false
     },
@@ -207,7 +217,7 @@ export default {
     },
     comparePreset(...args) {
       const [criterion, presetValues] = args
-      this.parentCriterion = criterion
+      this.criterion = criterion
       this.comparison = new Comparison(presetValues)
       this.comparisonType = 'PRESET'
       this.showComparisonForm = true
@@ -219,7 +229,7 @@ export default {
     },
     compare(comparison) {
       if (this.comparisonType === 'PRESET') {
-        this.parentCriterion.preset = {
+        this.criterion.preset = {
           values: comparison.alternatives,
           dm: comparison.dm,
         }

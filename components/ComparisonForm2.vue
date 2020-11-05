@@ -91,6 +91,8 @@ export default {
     lineChartDragAction(e, datasetIndex, column, value) {
       this.comparison.dm.setCell(0, column, convertChartToAHP(value))
       this.comparison.dm.autocomplete2()
+
+      this.$forceUpdate()
     },
 
     save() {
