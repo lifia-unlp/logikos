@@ -37,7 +37,6 @@
           <div>
             <font-awesome-icon
               :icon="['far', 'question-circle']"
-              v-tooltip="'holllliiiiiiiii'"
               class="text-base text-gray-600 cursor-pointer"
             />
           </div>
