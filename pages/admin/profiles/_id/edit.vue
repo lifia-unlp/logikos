@@ -1,134 +1,61 @@
 <template>
   <div class="container">
-    <h1 class="title">New Profile</h1>
+    <h1 class="title">Edit profile "{{ originalName }}"</h1>
 
     <div class="grid grid-cols-12 gap-6">
       <div class="col-span-8 box">
         <h2 class="text-secondary text-xl">Basic Information</h2>
         <div class="form-field">
-          <label class="form-field-label">NAME</label>
-          <input v-model="profile.name" class="form-field-input" type="text" />
+          <label class="form-field__label">NAME</label>
+          <input v-model="profile.name" class="form-field__input" type="text" />
         </div>
 
         <div class="form-field">
-          <label class="form-field-label">DESCRIPTION</label>
+          <label class="form-field__label">DESCRIPTION</label>
           <textarea
             v-model="profile.description"
-            class="form-field-input resize-none"
+            class="form-field__input resize-none"
           >
           </textarea>
         </div>
       </div>
 
       <div class="col-span-4 row-span-2 box">
-        <h2 class="text-primary text-2xl">"{{ profile.name }}"</h2>
-        <p class="text-sm">{{ profile.description }}</p>
-
-        <div class="w-full h-full">
-          <canvas id="pieChart"></canvas>
-        </div>
+        <ProfileSummary :profile="profile"></ProfileSummary>
       </div>
 
       <div class="col-span-8 box">
-        <div class="flex flex-wrap justify-between">
-          <div>
-            <h2 class="text-secondary text-xl mb-4">Criteria</h2>
-          </div>
-          <div>
-            <font-awesome-icon
-              :icon="['far', 'question-circle']"
-              class="text-base text-gray-600 cursor-pointer"
-            />
-          </div>
-        </div>
-
-        <button
-          class="text-accent text-sm cursor-pointer"
-          v-if="
-            profile.criteria.length > 1 &&
-            !(showCriterionForm || showComparisonForm)
-          "
-          @click="compareCriteria"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'sort-amount-down']"
-            class="text-accent text-base cursor-pointer"
-          />
-          Compare
-        </button>
-
-        <AdminCriterion2
-          v-for="(criterion, i) in profile.criteria"
-          :key="i"
-          :criterion="criterion"
-          :showActions="!(showCriterionForm || showComparisonForm)"
-          @criterion:remove="removeCriterion(criterion)"
+        <CriteriaList
+          :criteria="profile.criteria"
+          :show="!(showCriterionForm || showComparisonForm)"
+          @criterion:remove="removeCriterion"
           @criterion:edit="editCriterion"
-          @criterion:new="newSubcriterion"
-          @comparison:new="compareSubcriteria"
+          @criterion:new="newCriterion"
+          @comparison:new="compareCriteria"
         >
-        </AdminCriterion2>
-
-        <button
-          class="text-accent text-sm cursor-pointer"
-          v-if="!(showCriterionForm || showComparisonForm)"
-          @click="newCriterion"
-        >
-          <font-awesome-icon :icon="['fas', 'plus']" />
-          Add Criterion
-        </button>
+        </CriteriaList>
       </div>
 
       <div v-if="showCriterionForm" class="col-span-8 box">
-        <div class="flex flex-wrap justify-between">
-          <div>
-            <h2 class="text-secondary text-xl mb-4">New Criterion</h2>
-          </div>
-          <div>
-            <font-awesome-icon
-              :icon="['far', 'question-circle']"
-              class="text-base text-gray-600 cursor-pointer"
-            />
-          </div>
-        </div>
-
-        <CriterionForm2
+        <CriterionForm
           :originalCriterion="criterion ? criterion : undefined"
           @criterion:add="addCriterion"
           @comparison:new:preset="comparePreset"
         >
-        </CriterionForm2>
+        </CriterionForm>
       </div>
 
       <div v-if="showComparisonForm" class="col-span-8 box">
-        <div class="flex flex-wrap justify-between">
-          <div>
-            <h2 class="text-secondary text-xl mb-4">Compare</h2>
-          </div>
-          <div>
-            <font-awesome-icon
-              :icon="['far', 'question-circle']"
-              class="text-base text-gray-600 cursor-pointer"
-            />
-          </div>
-        </div>
-
-        <ComparisonForm2 :comparison="comparison" @comparison:rank="compare">
-        </ComparisonForm2>
+        <ComparisonForm :comparison="comparison" @comparison:rank="compare">
+        </ComparisonForm>
       </div>
     </div>
 
     <div class="mt-8">
-      <button
-        class="py-1 px-2 bg-primary text-white font-bold"
-        @click="saveProfile"
-      >
+      <button class="btn btn--save" @click="saveProfile">
         Save
       </button>
-      <nuxt-link
-        class="py-1 px-2 bg-secondary text-white font-bold"
-        to="/admin/profiles"
-      >
+      <nuxt-link class="btn" to="/admin/profiles">
         Back
       </nuxt-link>
     </div>
@@ -137,7 +64,6 @@
 
 <script>
 import Comparison from '@/models/Comparison'
-import Chart from 'chart.js'
 
 import _ from 'lodash'
 
@@ -145,14 +71,12 @@ export default {
   data() {
     return {
       profile: {},
-      piechart: {},
       originalName: '',
       showCriterionForm: false,
       showComparisonForm: false,
       parentCriterion: null,
       criterion: null,
       comparison: null,
-      comparisonType: null,
     }
   },
   created() {
@@ -162,31 +86,13 @@ export default {
 
     this.originalName = this.profile.name
   },
-  mounted() {
-    const labels = this.profile.criteria.map((c) => c.name)
-
-    const values = this.profile.criteria.map((c) => c.absoluteWeight())
-
-    this.lineChart = new Chart(document.getElementById('pieChart'), {
-      type: 'pie',
-      data: {
-        labels,
-        datasets: [
-          {
-            backgroundColor: ['#E9604E', '#17273E', '#71BBE8'],
-            data: values,
-          },
-        ],
-      },
-    })
-  },
   methods: {
-    newCriterion() {
+    newCriterion(parentCriterion = null) {
       this.showCriterionForm = true
-    },
-    newSubcriterion(parentCriterion) {
-      this.showCriterionForm = true
-      this.parentCriterion = parentCriterion
+
+      if (parentCriterion !== null) {
+        this.parentCriterion = parentCriterion
+      }
     },
     editCriterion(criterion) {
       this.criterion = criterion
@@ -208,40 +114,27 @@ export default {
     removeCriterion(criterion) {
       this.profile.removeCriterion(criterion.name)
     },
-    compareSubcriteria(parentCriterion) {
-      this.parentCriterion = parentCriterion
-      this.comparison = new Comparison(parentCriterion.subcriteria)
-      this.comparisonType = 'SUBCRITERIA'
+    compareCriteria(criteria) {
       this.showComparisonForm = true
+      this.comparison = new Comparison(criteria)
     },
     comparePreset(...args) {
-      const [criterion, presetValues] = args
+      const [presetValues, criterion] = args
       this.criterion = criterion
       this.comparison = new Comparison(presetValues)
-      this.comparisonType = 'PRESET'
-      this.showComparisonForm = true
-    },
-    compareCriteria() {
-      this.comparison = new Comparison(this.profile.criteria)
-      this.comparisonType = 'CRITERIA'
       this.showComparisonForm = true
     },
     compare(comparison) {
-      if (this.comparisonType === 'PRESET') {
+      if (this.criterion !== null) {
         this.criterion.preset = {
           values: comparison.alternatives,
           dm: comparison.dm,
         }
       } else {
-        const ranking = comparison.rank()
+        const ranking = comparison.rank().ranking
 
-        const criteria =
-          this.comparisonType === 'SUBCRITERIA'
-            ? this.parentCriterion.subcriteria
-            : this.profile.criteria
-
-        for (const rankedItem of ranking.ranking) {
-          for (const criterion of criteria) {
+        for (const rankedItem of ranking) {
+          for (const criterion of comparison.alternatives) {
             if (rankedItem.alternative === criterion) {
               criterion.weight = rankedItem.weight
             }
@@ -249,9 +142,8 @@ export default {
         }
       }
 
-      this.parentCriterion = null
       this.comparison = null
-      this.comparisonType = ''
+      this.criterion = null
       this.showComparisonForm = false
     },
     saveProfile() {

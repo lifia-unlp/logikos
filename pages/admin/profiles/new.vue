@@ -6,44 +6,56 @@
       <div class="col-span-8 box">
         <h2 class="text-secondary text-xl">Basic Information</h2>
         <div class="form-field">
-          <label class="form-field-label">NAME</label>
-          <input v-model="profile.name" class="form-field-input" type="text" />
+          <label class="form-field__label">NAME</label>
+          <input v-model="profile.name" class="form-field__input" type="text" />
         </div>
 
         <div class="form-field">
-          <label class="form-field-label">DESCRIPTION</label>
+          <label class="form-field__label">DESCRIPTION</label>
           <textarea
             v-model="profile.description"
-            class="form-field-input resize-none"
+            class="form-field__input resize-none"
           >
           </textarea>
         </div>
       </div>
 
-      <div class="col-span-8 box">
-        <h2 class="text-secondary text-xl mb-4">Criteria</h2>
+      <div class="col-span-4 row-span-2 box">
+        <ProfileSummary :profile="profile"></ProfileSummary>
+      </div>
 
-        <AdminCriterion2
-          v-for="(criterion, i) in profile.criteria"
-          :key="i"
-          :criterion="criterion"
-          @criterion:remove="removeCriterion(criterion)"
+      <div class="col-span-8 box">
+        <CriteriaList
+          :criteria="profile.criteria"
+          :show="!(showCriterionForm || showComparisonForm)"
+          @criterion:remove="removeCriterion"
+          @criterion:edit="editCriterion"
+          @criterion:new="newCriterion"
+          @comparison:new="compareCriteria"
         >
-        </AdminCriterion2>
+        </CriteriaList>
+      </div>
+
+      <div v-if="showCriterionForm" class="col-span-8 box">
+        <CriterionForm
+          :originalCriterion="criterion ? criterion : undefined"
+          @criterion:add="addCriterion"
+          @comparison:new:preset="comparePreset"
+        >
+        </CriterionForm>
+      </div>
+
+      <div v-if="showComparisonForm" class="col-span-8 box">
+        <ComparisonForm :comparison="comparison" @comparison:rank="compare">
+        </ComparisonForm>
       </div>
     </div>
 
     <div class="mt-8">
-      <button
-        class="py-1 px-2 bg-primary text-white font-bold"
-        @click="saveProfile"
-      >
+      <button class="btn btn--save" @click="saveProfile">
         Save
       </button>
-      <nuxt-link
-        class="py-1 px-2 bg-secondary text-white font-bold"
-        to="/admin/profiles"
-      >
+      <nuxt-link class="btn" to="/admin/profiles">
         Back
       </nuxt-link>
     </div>
@@ -51,20 +63,79 @@
 </template>
 
 <script>
+import Comparison from '@/models/Comparison'
 import Profile from '@/models/Profile'
 
 export default {
   data() {
     return {
       profile: new Profile(),
+      showCriterionForm: false,
+      showComparisonForm: false,
+      parentCriterion: null,
+      criterion: null,
+      comparison: null,
     }
   },
   methods: {
+    newCriterion(parentCriterion = null) {
+      this.showCriterionForm = true
+
+      if (parentCriterion !== null) {
+        this.parentCriterion = parentCriterion
+      }
+    },
+    editCriterion(criterion) {
+      this.criterion = criterion
+      this.showCriterionForm = true
+    },
     addCriterion(criterion) {
-      this.profile.addCriterion(criterion)
+      if (this.criterion !== null) {
+        Object.assign(this.criterion, criterion)
+      } else if (this.parentCriterion !== null) {
+        this.parentCriterion.addSubcriterion(criterion)
+      } else {
+        this.profile.addCriterion(criterion)
+      }
+
+      this.criterion = null
+      this.parentCriterion = null
+      this.showCriterionForm = false
     },
     removeCriterion(criterion) {
       this.profile.removeCriterion(criterion.name)
+    },
+    compareCriteria(criteria) {
+      this.showComparisonForm = true
+      this.comparison = new Comparison(criteria)
+    },
+    comparePreset(...args) {
+      const [presetValues, criterion] = args
+      this.criterion = criterion
+      this.comparison = new Comparison(presetValues)
+      this.showComparisonForm = true
+    },
+    compare(comparison) {
+      if (this.criterion !== null) {
+        this.criterion.preset = {
+          values: comparison.alternatives,
+          dm: comparison.dm,
+        }
+      } else {
+        const ranking = comparison.rank().ranking
+
+        for (const rankedItem of ranking) {
+          for (const criterion of comparison.alternatives) {
+            if (rankedItem.alternative === criterion) {
+              criterion.weight = rankedItem.weight
+            }
+          }
+        }
+      }
+
+      this.comparison = null
+      this.criterion = null
+      this.showComparisonForm = false
     },
     saveProfile() {
       this.$store.dispatch('addProfile', this.profile)
@@ -81,20 +152,35 @@ export default {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
-
 .box {
   @apply mb-8 px-5 py-4 bg-white shadow-lg;
+}
+
+.btn {
+  @apply py-1 px-2 bg-secondary text-white font-bold;
+}
+
+.btn--save {
+  @apply bg-primary;
 }
 
 .form-field {
   @apply mt-3;
 }
 
-.form-field-label {
+.form-field__label {
   @apply block text-sm text-primary tracking-wider;
 }
 
-.form-field-input {
+.form-field__label--inline {
+  @apply inline;
+}
+
+.form-field__input {
   @apply py-1 px-2 w-full border border-gray-300 bg-white text-sm;
+}
+
+.form-field__hint {
+  @apply text-xs text-gray-600;
 }
 </style>

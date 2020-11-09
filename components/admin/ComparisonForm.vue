@@ -1,26 +1,58 @@
 <template>
-  <div class="border-solid border-2 mt-2 p-4">
-    <p>Comparison</p>
-    <div class="flex mb-4">
-      <div class="w-1/2">
-        <canvas id="lineChart"></canvas>
+  <div>
+    <div class="flex flex-wrap justify-between">
+      <div>
+        <h2 class="text-secondary text-xl mb-4">Compare</h2>
       </div>
-      <div class="w-1/2">
+      <div>
+        <font-awesome-icon
+          :icon="['far', 'question-circle']"
+          class="text-base text-gray-600 cursor-pointer"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-wrap mb-4">
+      <div class="w-full">
+        <canvas id="lineChart"></canvas>
+        <p class="form-field__hint">
+          &#128712; Drag each point representing an item/value in relation to
+          the one with the anchor icon. Is it better? Is it worse? how much
+          better/worse?
+        </p>
+      </div>
+      <div class="comparison-details">
+        <!--
+          ComparisonDetails
+           -> DecisionMatrix
+        -->
         <table>
           <tr v-for="(row, i) in comparison.dm.matrix" :key="i">
-            <td v-for="(cell, j) in row" :key="j">
+            <td
+              v-for="(cell, j) in row"
+              :key="j"
+              class="comparison-details__dm-cell"
+            >
               <input
+                class="comparison-details__dm-input"
                 v-model="comparison.dm.matrix[i][j]"
                 @change="invert(i, j)"
               />
             </td>
           </tr>
         </table>
-        <p>CR: {{ comparison.dm.consistencyRatio() }}</p>
+        <div>
+          <p class="comparison-details__cr-title">
+            CONSISTENCY RATIO
+          </p>
+          <p class="comparison-details__cr-value">
+            {{ comparison.dm.consistencyRatio() }}
+          </p>
+        </div>
       </div>
     </div>
-    <button class="button-default" @click="save">
-      Save comparison
+    <button class="btn btn--save" @click="save">
+      Save
     </button>
   </div>
 </template>
@@ -75,6 +107,8 @@ export default {
     lineChartDragAction(e, datasetIndex, column, value) {
       this.comparison.dm.setCell(0, column, convertChartToAHP(value))
       this.comparison.dm.autocomplete2()
+
+      this.$forceUpdate()
     },
 
     save() {
@@ -83,3 +117,24 @@ export default {
   },
 }
 </script>
+<style>
+.comparison-details {
+  @apply w-full flex flex-wrap justify-evenly items-center;
+}
+
+.comparison-details__dm-cell {
+  @apply border-2 border-gray-300;
+}
+
+.comparison-details__dm-input {
+  @apply w-10 h-10 text-center bg-transparent;
+}
+
+.comparison-details__cr-title {
+  @apply text-center tracking-wider text-secondary text-lg;
+}
+
+.comparison-details__cr-value {
+  @apply text-center text-2xl;
+}
+</style>
