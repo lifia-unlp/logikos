@@ -40,13 +40,18 @@
         <CriterionForm
           :originalCriterion="criterion ? criterion : undefined"
           @criterion:add="addCriterion"
+          @cancel="cancelForm('criterion')"
           @comparison:new:preset="comparePreset"
         >
         </CriterionForm>
       </div>
 
       <div v-if="showComparisonForm" class="col-span-8 box">
-        <ComparisonForm :comparison="comparison" @comparison:rank="compare">
+        <ComparisonForm
+          :comparison="comparison"
+          @comparison:rank="compare"
+          @cancel="cancelForm('comparison')"
+        >
         </ComparisonForm>
       </div>
     </div>
@@ -87,6 +92,22 @@ export default {
     this.originalName = this.profile.name
   },
   methods: {
+    cancelForm(form) {
+      switch (form) {
+        case 'criterion':
+          this.parentCriterion = this.criterion = null
+          this.showCriterionForm = false
+          if (this.showComparisonForm) {
+            this.showComparisonForm = false
+            this.comparison = null
+          }
+          break
+        case 'comparison':
+          this.comparison = null
+          this.showComparisonForm = false
+          break
+      }
+    },
     newCriterion(parentCriterion = null) {
       this.showCriterionForm = true
 

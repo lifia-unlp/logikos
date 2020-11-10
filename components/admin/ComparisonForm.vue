@@ -54,6 +54,9 @@
     <button class="btn btn--save" @click="save">
       Save
     </button>
+    <button class="btn" @click="cancel">
+      Cancel
+    </button>
   </div>
 </template>
 
@@ -110,7 +113,9 @@ export default {
 
       this.$forceUpdate()
     },
-
+    cancel() {
+      this.$emit('cancel')
+    },
     save() {
       this.$emit('comparison:rank', this.comparison)
     },

@@ -65,6 +65,9 @@
     <button class="btn btn--save" @click="addCriterion">
       Save
     </button>
+    <button class="btn" @click="cancel">
+      Cancel
+    </button>
   </div>
 </template>
 
@@ -94,6 +97,9 @@ export default {
     this.criterion = _.cloneDeep(this.originalCriterion)
   },
   methods: {
+    cancel() {
+      this.$emit('cancel')
+    },
     addCriterion() {
       this.$emit('criterion:add', this.criterion)
     },
