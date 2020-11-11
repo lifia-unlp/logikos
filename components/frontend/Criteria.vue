@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CriterionComponent from '@/components/Criterion'
+import CriterionComponent from '@/components/frontend/Criterion'
 
 const c = {
   name: 'Criteria',

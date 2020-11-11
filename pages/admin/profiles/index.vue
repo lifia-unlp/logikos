@@ -5,13 +5,9 @@
     <div class="searchInput">
       <input
         v-model="searchInput"
-        class="w-11/12 bg-transparent"
+        class="w-full bg-transparent italic text-secondary text-opacity-50"
         type="text"
-        placeholder="Search..."
-      />
-      <font-awesome-icon
-        :icon="['fas', 'filter']"
-        class="ml-auto text-logikos-dark text-opacity-25"
+        placeholder="Type a name, description, criterion or author..."
       />
     </div>
 
@@ -19,7 +15,7 @@
 
     <div class="flex justify-end">
       <nuxt-link class="button-new" to="/admin/profiles/new">
-        new profile
+        + New Profile
       </nuxt-link>
     </div>
   </div>
@@ -50,14 +46,14 @@ export default {
 
 <style>
 .title {
-  @apply text-5xl text-logikos;
+  @apply mt-8 text-4xl text-secondary;
 }
 
 .searchInput {
-  @apply w-full mx-auto my-4 px-2 py-1 border rounded italic bg-white;
+  @apply w-full mx-auto my-4 px-4 py-1 bg-white;
 }
 
 .button-new {
-  @apply pl-1 border-l-2 border-logikos-orange text-logikos-light italic;
+  @apply mt-4 px-2 py-1 bg-secondary text-white text-sm;
 }
 </style>

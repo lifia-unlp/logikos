@@ -1,5 +1,7 @@
+import DecisionMatrix from '@/models/DecisionMatrix'
+
 class Preset {
-  constructor(criterion, values, matrix) {
+  constructor(criterion, values = [], matrix = new DecisionMatrix()) {
     this.criterion = criterion
     this.values = values
     this.matrix = matrix

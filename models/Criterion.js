@@ -2,7 +2,7 @@ import Preset from '@/models/Preset'
 import _ from 'lodash'
 
 class Criterion {
-  constructor(name, subcriteria = [], preset = null) {
+  constructor(name, subcriteria = [], preset = new Preset()) {
     this.name = name
     this.weight = 0
     this.parent = null
@@ -48,14 +48,21 @@ class Criterion {
     return this.subcriteria.length > 0
   }
 
+  canHavePreset() {
+    return this.subcriteria.length === 0
+  }
+
+  hasPreset() {
+    return this.canHavePreset() && 'preset' in this
+  }
+
   relativeWeight() {
     return this.weight
   }
 
-  // TODO cambiar esta regla de lintin de mierda
   absoluteWeight() {
     if (this.parent != null) {
-      return this.weight * this.parent.weight
+      return this.weight * this.parent.absoluteWeight()
     } else {
       return this.weight
     }
