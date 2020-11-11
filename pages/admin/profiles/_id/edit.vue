@@ -40,8 +40,8 @@
         <CriterionForm
           :originalCriterion="criterion ? criterion : undefined"
           @criterion:add="addCriterion"
-          @cancel="cancelForm('criterion')"
           @comparison:new:preset="comparePreset"
+          @cancel="cancelForm('criterion')"
         >
         </CriterionForm>
       </div>

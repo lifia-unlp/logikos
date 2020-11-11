@@ -37,30 +37,34 @@
       />
     </div>
 
-    <p class="mt-4 text-lg text-secondary">Preset</p>
+    <div v-if="criterion.canHavePreset()">
+      <p class="mt-4 text-lg text-secondary">Preset</p>
 
-    <div class="form-field">
-      <label class="form-field__label">VALUE</label>
-      <input v-model="presetValue" class="form-field__input" type="text" />
+      <div class="form-field">
+        <label class="form-field__label">VALUE</label>
+        <input v-model="presetValue" class="form-field__input" type="text" />
+      </div>
+
+      <button @click="addPresetValue()" class="criterion-form__btn">
+        <font-awesome-icon :icon="['fas', 'plus']" />
+        Add
+      </button>
+
+      <button
+        v-if="criterion.preset.values.length > 1"
+        @click="comparePreset()"
+        class="criterion-form__btn"
+      >
+        <font-awesome-icon :icon="['fas', 'sort-amount-down']" />
+        Compare
+      </button>
+
+      <ul>
+        <li v-for="(preset, i) in criterion.preset.values" :key="i">
+          · {{ preset }}
+        </li>
+      </ul>
     </div>
-
-    <button @click="addPresetValue()" class="criterion-form__btn">
-      <font-awesome-icon :icon="['fas', 'plus']" />
-      Add
-    </button>
-
-    <button
-      v-if="presetValues.length > 1"
-      @click="comparePreset()"
-      class="criterion-form__btn"
-    >
-      <font-awesome-icon :icon="['fas', 'sort-amount-down']" />
-      Compare
-    </button>
-
-    <ul>
-      <li v-for="(preset, i) in presetValues" :key="i">· {{ preset }}</li>
-    </ul>
 
     <button class="btn btn--save" @click="addCriterion">
       Save
@@ -76,7 +80,7 @@ import Criterion from '@/models/Criterion'
 import _ from 'lodash'
 
 export default {
-  name: 'CriterionForm2',
+  name: 'CriterionForm',
   props: {
     originalCriterion: {
       type: Object,
@@ -90,7 +94,6 @@ export default {
       criterion: new Criterion(''),
       setAttribute: Boolean(this.originalCriterion.attribute),
       presetValue: '',
-      presetValues: [],
     }
   },
   mounted() {
@@ -105,15 +108,19 @@ export default {
     },
     addPresetValue() {
       if (this.presetValue !== '') {
-        this.presetValues.push(this.presetValue)
+        this.criterion.preset.values.push(this.presetValue)
         this.presetValue = ''
       }
     },
     removePresetValue(idx) {
-      this.presetValues.splice(idx, 1)
+      this.criterion.preset.values.splice(idx, 1)
     },
     comparePreset() {
-      this.$emit('comparison:new:preset', this.presetValues, this.criterion)
+      this.$emit(
+        'comparison:new:preset',
+        this.criterion.preset.values,
+        this.criterion
+      )
     },
   },
 }
