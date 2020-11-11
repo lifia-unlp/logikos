@@ -23,26 +23,53 @@ export default {
   },
   data() {
     return {
-      piechart: {},
+      pieChart: {},
     }
   },
   mounted() {
-    const labels = this.profile.criteria.map((c) => c.name)
-
-    const values = this.profile.criteria.map((c) => c.absoluteWeight())
-
-    this.lineChart = new Chart(document.getElementById('pieChart'), {
+    this.pieChart = new Chart(document.getElementById('pieChart'), {
       type: 'pie',
       data: {
-        labels,
         datasets: [
           {
-            backgroundColor: ['#E9604E', '#17273E', '#71BBE8'],
-            data: values,
+            backgroundColor: [
+              '#E9604E',
+              '#17273E',
+              '#71BBE8',
+              '#0F7173',
+              '#533A7B',
+              '#4B244A',
+            ],
           },
         ],
       },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1,
+      },
     })
+
+    this._updatePieChart()
+  },
+  watch: {
+    profile: {
+      handler(val) {
+        this._updatePieChart()
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    _updatePieChart() {
+      this.pieChart.data.labels = this.profile.criteria.map((c) => c.name)
+
+      this.pieChart.data.datasets[0].data = this.profile.criteria.map((c) =>
+        c.absoluteWeight()
+      )
+
+      this.pieChart.update()
+    },
   },
 }
 </script>
