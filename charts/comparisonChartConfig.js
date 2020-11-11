@@ -51,7 +51,7 @@ export default {
     datasets: [
       {
         data: [],
-        borderColor: '#3cba9f',
+        borderColor: '#71BBE8',
         fill: false,
       },
     ],
