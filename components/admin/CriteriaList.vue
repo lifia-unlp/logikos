@@ -5,10 +5,13 @@
         <h2 class="text-secondary text-xl mb-4">Criteria</h2>
       </div>
       <div>
-        <font-awesome-icon
-          :icon="['far', 'question-circle']"
-          class="text-base text-gray-600 cursor-pointer"
-        />
+        <HelpPopover title="Profile criteria">
+          Specify the comparison criteria for this profile that will be used on
+          a set of alternatives. You can create, edit and delete criterions.
+          Each criterion can be broke down in subcriteria. You can compare
+          criteria of the same level to determine how much important is one
+          criterion to another.
+        </HelpPopover>
       </div>
     </div>
 
