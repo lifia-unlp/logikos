@@ -5,10 +5,12 @@
         <h2 class="text-secondary text-xl mb-4">Compare</h2>
       </div>
       <div>
-        <font-awesome-icon
-          :icon="['far', 'question-circle']"
-          class="text-base text-gray-600 cursor-pointer"
-        />
+        <HelpPopover title="Comparison">
+          Compare a set of criteria or preset values. Drag the points of the
+          widget to specify the relationship of importance between an element to
+          the leftmost. If you want to, you can check more details of the
+          comparison: the resulting decision matrix and consistency of it.
+        </HelpPopover>
       </div>
     </div>
 
@@ -22,10 +24,6 @@
         </p>
       </div>
       <div class="comparison-details">
-        <!--
-          ComparisonDetails
-           -> DecisionMatrix
-        -->
         <table>
           <tr v-for="(row, i) in comparison.dm.matrix" :key="i">
             <td

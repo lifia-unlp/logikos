@@ -5,10 +5,15 @@
         <h2 class="text-secondary text-xl mb-4">New Criterion</h2>
       </div>
       <div>
-        <font-awesome-icon
-          :icon="['far', 'question-circle']"
-          class="text-base text-gray-600 cursor-pointer"
-        />
+        <HelpPopover title="Criterion">
+          Create a new criterion or edit an existing one. If the name does not
+          match the alternative's corresponding property you should specify it
+          on the "attribute" field, for instance if the criterion's name is
+          "cost" you should specify "price" in the attribute field. <br />
+          If the criterion doesn't have subcriteria you can specify a preset, a
+          set of possible values and precompare them so the profile user doesn't
+          have to!
+        </HelpPopover>
       </div>
     </div>
 
