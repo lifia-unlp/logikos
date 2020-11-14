@@ -22,8 +22,17 @@
           the one with the anchor icon. Is it better? Is it worse? how much
           better/worse?
         </p>
+
+        <button
+          class="mt-2 text-sm text-secondary"
+          @click="showDetails = !showDetails"
+        >
+          <font-awesome-icon v-if="showDetails" :icon="['fas', 'angle-down']" />
+          <font-awesome-icon v-else :icon="['fas', 'angle-right']" />
+          Show details
+        </button>
       </div>
-      <div class="comparison-details">
+      <div class="comparison-details" v-if="showDetails">
         <table>
           <tr v-for="(row, i) in comparison.dm.matrix" :key="i">
             <td
@@ -43,8 +52,15 @@
           <p class="comparison-details__cr-title">
             CONSISTENCY RATIO
           </p>
-          <p class="comparison-details__cr-value">
-            {{ comparison.dm.consistencyRatio() }}
+          <p
+            class="comparison-details__cr-value"
+            :class="[
+              !comparison.dm.isConsistent()
+                ? 'comparison-details__cr-value--inconsistent'
+                : '',
+            ]"
+          >
+            {{ consistencyRatio }}
           </p>
         </div>
       </div>
@@ -79,7 +95,13 @@ export default {
   data() {
     return {
       lineChart: {},
+      showDetails: false,
     }
+  },
+  computed: {
+    consistencyRatio() {
+      return Math.abs(this.comparison.dm.consistencyRatio().toFixed(2))
+    },
   },
   mounted() {
     comparisonChartConfig.options.onDragEnd = this.lineChartDragAction
@@ -138,6 +160,10 @@ export default {
 }
 
 .comparison-details__cr-value {
-  @apply text-center text-2xl;
+  @apply text-center text-2xl text-green-400;
+}
+
+.comparison-details__cr-value--inconsistent {
+  @apply text-red-400;
 }
 </style>
