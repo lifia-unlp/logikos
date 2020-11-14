@@ -93,8 +93,14 @@ export default class {
     }
   }
 
+  isConsistent() {
+    return this.consistencyRatio() <= 0.1
+  }
+
   consistencyRatio() {
-    return this.consistencyIndex() / this.randomConsistencyIndex()
+    return this.matrix.length === 2
+      ? 0
+      : this.consistencyIndex() / this.randomConsistencyIndex()
   }
 
   consistencyIndex() {
