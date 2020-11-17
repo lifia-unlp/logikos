@@ -2,7 +2,8 @@
   <div>
     <Menu></Menu>
 
-    <div class="lg:container lg:mx-auto px-4">
+    <div class="container mx-auto mt-2 px-4 py-2 w-3/12 bg-white shadow">
+      <h1 class="font-light mt-2 mb-4">Logikos</h1>
       <Nuxt />
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/2">
+  <div>
     <div class="my-2">
       <label>Profile</label>
       <select v-model="selectedProfileId" class="profile-select">
@@ -7,16 +7,6 @@
           {{ profile.name }}
         </option>
       </select>
-      <nuxt-link
-        v-if="selectedProfileId"
-        class="default-button"
-        :to="{
-          name: 'profiles-id',
-          params: { id: currentProfile._id },
-        }"
-      >
-        Ver
-      </nuxt-link>
     </div>
 
     <div v-if="selectedProfileId">
@@ -67,6 +57,7 @@ import axios from 'axios'
 import Comparison from '@/models/Comparison'
 
 export default {
+  layout: 'frontend',
   data() {
     return {
       alternativeUrl: '',

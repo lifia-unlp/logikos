@@ -35,7 +35,7 @@ export const mutations = {
 
 export const actions = {
   async fetchProfiles(context, payload) {
-    const { data } = await Axios.get('https://gentle-reaches-63295.herokuapp.com/profiles')
+    const { data } = await Axios.get('localhost:3000/profiles')
     context.commit(
       'setProfiles',
       data.map((d) => Profile.deserealize(d))
@@ -45,7 +45,7 @@ export const actions = {
   async addProfile(context, payload) {
     const { data } = await Axios({
       method: 'post',
-      url: 'https://gentle-reaches-63295.herokuapp.com/profiles',
+      url: 'localhost:3000/profiles',
       data: payload,
       transformRequest: [
         function (data, headers) {
@@ -63,7 +63,7 @@ export const actions = {
   async updateProfile(context, profile) {
     await Axios({
       method: 'put',
-      url: `https://gentle-reaches-63295.herokuapp.com/profiles/${profile._id}`,
+      url: `localhost:3000/profiles/${profile._id}`,
       data: profile,
       transformRequest: [
         function (data, headers) {
@@ -79,7 +79,7 @@ export const actions = {
   },
 
   async removeProfile(context, profileId) {
-    await Axios.delete(`https://gentle-reaches-63295.herokuapp.com/profiles/${profileId}`)
+    await Axios.delete(`localhost:3000/profiles/${profileId}`)
 
     context.commit('removeProfile', profileId)
   },
