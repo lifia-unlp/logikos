@@ -8,7 +8,7 @@ export default class {
     this.dm = new DecisionMatrix(alternatives.length)
     this.isCompared = false
 
-    if (this.hasPreset()) {
+    if (criterion && criterion.hasPreset()) {
       this.loadPreset()
     }
   }
@@ -27,10 +27,6 @@ export default class {
       this.dm.shrink()
       this.dm.reset()
     }
-  }
-
-  hasPreset() {
-    return Object.prototype.hasOwnProperty.call(this, 'preset')
   }
 
   loadPreset() {

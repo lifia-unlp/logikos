@@ -45,7 +45,7 @@ class Criterion {
   }
 
   shouldBeCompared() {
-    return this.subcriteria.length > 0
+    return this.subcriteria.length === 0
   }
 
   canHavePreset() {

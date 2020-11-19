@@ -12,7 +12,7 @@ class Preset {
 
     for (const value of this.values) {
       for (const alternative of alternatives) {
-        if (alternative[this.criterion.attribute()] === value) {
+        if (alternative[this.criterion.getAttribute()] === value) {
           sortedAlternatives.push(alternative)
         }
       }
@@ -25,7 +25,7 @@ class Preset {
 
   getSubDecisionMatrix(alternatives) {
     const idxs = alternatives.map((a) =>
-      this.values.indexOf(a[this.criterion.attribute()])
+      this.values.indexOf(a[this.criterion.getAttribute()])
     )
 
     const dm = []
