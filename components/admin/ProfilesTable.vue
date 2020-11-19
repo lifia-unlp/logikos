@@ -19,7 +19,7 @@
         <td class="profile-td">
           <ul class="profile-criteria">
             <li v-for="(criterion, i) in profile.criteria" :key="i">
-              {{ criterion.name }} ({{ criterion.absoluteWeight() * 100 }}%)
+              {{ criterion.name }} ({{ criterionWeight(criterion) }}%)
             </li>
           </ul>
         </td>
@@ -97,6 +97,11 @@ export default {
     },
   },
   methods: {
+    criterionWeight(criterion) {
+      const weight = criterion.absoluteWeight() * 100
+
+      return weight > 1 ? Math.round(weight) : weight.toFixed(2)
+    },
     deleteProfile(profileId) {
       this.$store.dispatch('removeProfile', profileId)
     },
