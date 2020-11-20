@@ -4,12 +4,6 @@ export const state = () => ({
   comparisons: [],
 })
 
-export const getters = {
-  getComparisonByCriterion: (state) => (criterion) => {
-    return state.comparisons.find((c) => c.criterion.name === criterion.name)
-  },
-}
-
 export const mutations = {
   setSelectedProfileId(state, profileId) {
     state.selectedProfileId = profileId

@@ -58,9 +58,7 @@ export default {
       return weight > 1 ? Math.round(weight) : weight.toFixed(2)
     },
     comparison() {
-      return this.$store.getters['frontend/getComparisonByCriterion'](
-        this.criterion
-      )
+      return this.$store.state.frontend.comparisons[this.criterion.name]
     },
   },
 }

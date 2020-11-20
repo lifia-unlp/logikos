@@ -82,6 +82,7 @@
 
 <script>
 import Criterion from '@/models/Criterion'
+import Preset from '@/models/Preset'
 import _ from 'lodash'
 
 export default {
@@ -101,14 +102,25 @@ export default {
       presetValue: '',
     }
   },
-  mounted() {
+  beforeMount() {
     this.criterion = _.cloneDeep(this.originalCriterion)
+
+    if (this.criterion.canHavePreset() && !this.criterion.hasPreset()) {
+      this.criterion.preset = new Preset()
+    }
   },
   methods: {
     cancel() {
       this.$emit('cancel')
     },
     addCriterion() {
+      if (
+        this.criterion.canHavePreset() &&
+        this.criterion.preset.values.length === 0
+      ) {
+        delete this.criterion.preset
+      }
+
       this.$emit('criterion:add', this.criterion)
     },
     addPresetValue() {

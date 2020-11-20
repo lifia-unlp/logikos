@@ -87,12 +87,18 @@ export default {
       })
     },
     _loadComparisons() {
-      this.$store.commit(
-        'frontend/setComparisons',
-        this.currentProfile
-          .getComparableCriteria()
-          .map((c) => new Comparison(this.alternatives, c))
-      )
+      const criteria = this.currentProfile.getComparableCriteria()
+
+      const comparisons = {}
+
+      for (const criterion of criteria) {
+        const comp = new Comparison(this.alternatives)
+        comp.loadPreset(criterion)
+
+        comparisons[criterion.name] = comp
+      }
+
+      this.$store.commit('frontend/setComparisons', comparisons)
     },
   },
   watch: {
@@ -103,6 +109,12 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchProfiles')
+  },
+  mounted() {
+    if (this.selectedProfileId !== null) {
+      this._updatePieChart()
+      this._loadComparisons()
+    }
   },
 }
 </script>
