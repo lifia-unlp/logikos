@@ -1,18 +1,17 @@
 import DecisionMatrix from '@/models/DecisionMatrix'
 
 class Preset {
-  constructor(criterion, values = [], matrix = new DecisionMatrix()) {
-    this.criterion = criterion
+  constructor(values = [], matrix = new DecisionMatrix()) {
     this.values = values
     this.matrix = matrix
   }
 
-  sortAlternatives(alternatives) {
+  sortAlternatives(alternatives, attribute) {
     const sortedAlternatives = []
 
     for (const value of this.values) {
       for (const alternative of alternatives) {
-        if (alternative[this.criterion.getAttribute()] === value) {
+        if (alternative[attribute] === value) {
           sortedAlternatives.push(alternative)
         }
       }
@@ -23,10 +22,8 @@ class Preset {
     return sortedAlternatives
   }
 
-  getSubDecisionMatrix(alternatives) {
-    const idxs = alternatives.map((a) =>
-      this.values.indexOf(a[this.criterion.getAttribute()])
-    )
+  getSubDecisionMatrix(alternatives, attribute) {
+    const idxs = alternatives.map((a) => this.values.indexOf(a[attribute]))
 
     const dm = []
 

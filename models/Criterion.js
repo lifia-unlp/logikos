@@ -2,16 +2,13 @@ import Preset from '@/models/Preset'
 import _ from 'lodash'
 
 class Criterion {
-  constructor(name, subcriteria = [], preset = new Preset()) {
+  constructor(name, subcriteria = [], preset = null) {
     this.name = name
     this.weight = 0
     this.parent = null
     this.attribute = null
     this.subcriteria = []
-
-    if (preset) {
-      this._setPreset(preset)
-    }
+    this.preset = preset
 
     this._addSubcriteria(subcriteria)
   }
@@ -53,7 +50,7 @@ class Criterion {
   }
 
   hasPreset() {
-    return this.canHavePreset() && 'preset' in this
+    return this.canHavePreset() && this.preset
   }
 
   relativeWeight() {
@@ -74,11 +71,6 @@ class Criterion {
     } else {
       return this
     }
-  }
-
-  _setPreset(preset) {
-    preset.criterion = this
-    this.preset = preset
   }
 
   _addSubcriteria(criteria) {
