@@ -38,7 +38,7 @@
 
       <div v-if="showCriterionForm" class="col-span-8 box">
         <CriterionForm
-          :originalCriterion="criterion ? criterion : undefined"
+          :originalCriterion="editingCriterion ? editingCriterion : undefined"
           @criterion:add="addCriterion"
           @comparison:new:preset="comparePreset"
           @cancel="cancelForm('criterion')"
@@ -78,6 +78,7 @@ export default {
       showCriterionForm: false,
       showComparisonForm: false,
       parentCriterion: null,
+      editingCriterion: null,
       criterion: null,
       comparison: null,
     }
@@ -107,19 +108,19 @@ export default {
       }
     },
     editCriterion(criterion) {
-      this.criterion = criterion
+      this.editingCriterion = criterion
       this.showCriterionForm = true
     },
     addCriterion(criterion) {
-      if (this.criterion !== null) {
-        Object.assign(this.criterion, criterion)
+      if (this.editingCriterion !== null) {
+        Object.assign(this.editingCriterion, criterion)
       } else if (this.parentCriterion !== null) {
         this.parentCriterion.addSubcriterion(criterion)
       } else {
         this.profile.addCriterion(criterion)
       }
 
-      this.criterion = null
+      this.editingCriterion = null
       this.parentCriterion = null
       this.showCriterionForm = false
     },
