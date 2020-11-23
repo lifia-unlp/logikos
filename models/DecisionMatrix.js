@@ -15,6 +15,26 @@ const CONSISTENCY_INDEXES = Object.freeze([
   1.49,
 ])
 
+const VALID_VALUES = Object.freeze([
+  1 / 2,
+  1 / 3,
+  1 / 4,
+  1 / 5,
+  1 / 6,
+  1 / 7,
+  1 / 8,
+  1 / 9,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+])
+
 export default class {
   constructor(size = 0) {
     this.matrix = []
@@ -93,6 +113,22 @@ export default class {
     }
   }
 
+  autocomplete3(referenceRow = 0) {
+    for (let row = 0; row < this.matrix.length; row++) {
+      for (let col = row + 1; col < this.matrix.length; col++) {
+        if (row !== referenceRow) {
+          this.setCell(
+            row,
+            col,
+            this._closestValue(
+              this.matrix[referenceRow][col] / this.matrix[referenceRow][row]
+            )
+          )
+        }
+      }
+    }
+  }
+
   isConsistent() {
     return this.consistencyRatio() <= 0.1
   }
@@ -113,6 +149,14 @@ export default class {
   randomConsistencyIndex() {
     // TODO what if i the matrix is larger than 10 alternatives
     return CONSISTENCY_INDEXES[this.matrix.length]
+  }
+
+  _closestValue(value) {
+    if (VALID_VALUES.includes(value)) return value
+
+    return VALID_VALUES.reduce((prev, curr) => {
+      return Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+    })
   }
 
   _computeCellValue(row, col, chaos) {
