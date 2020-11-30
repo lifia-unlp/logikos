@@ -95,6 +95,7 @@ export default {
   data() {
     return {
       lineChart: {},
+      referenceRow: 0,
       showDetails: false,
     }
   },
@@ -111,14 +112,7 @@ export default {
       comparisonChartConfig
     )
 
-    this.lineChart.data.labels = this.comparison.alternatives.map((a) =>
-      a.toString()
-    )
-    this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0].map(
-      convertAHPToChart
-    )
-
-    this.lineChart.update()
+    this._setChartLabelsAndDataset()
   },
   methods: {
     invert(row, col) {
@@ -127,9 +121,15 @@ export default {
       this.$set(this.comparison.dm.matrix, col, this.comparison.dm.matrix[col])
     },
 
-    lineChartDragAction(e, datasetIndex, column, value) {
-      this.comparison.dm.setCell(0, column, convertChartToAHP(value))
-      this.comparison.dm.autocomplete3()
+    lineChartDragAction(e, datasetIndex, point, value) {
+      const column = point > this.referenceRow ? point : point - 1
+
+      this.comparison.dm.setCell(
+        this.referenceRow,
+        column,
+        convertChartToAHP(value)
+      )
+      this.comparison.dm.autocomplete3(this.referenceRow)
 
       this.$forceUpdate()
     },
@@ -138,6 +138,26 @@ export default {
     },
     save() {
       this.$emit('comparison:rank', this.comparison)
+    },
+    _setChartLabelsAndDataset() {
+      this.lineChart.data.labels = this._getChartLabels()
+      this.lineChart.data.datasets[0].data = this._getChartDataset()
+
+      this.lineChart.update()
+    },
+    _getChartLabels() {
+      const alternatives = this.comparison.alternatives.slice()
+
+      const ref = alternatives.splice(this.referenceRow, 1)
+
+      return [ref.toString()].concat(alternatives.map((a) => a.toString()))
+    },
+    _getChartDataset() {
+      const row = this.comparison.dm[this.referenceRow].slice()
+
+      row.splice(this.referenceRow, 1)
+
+      return [0].concat(row.map(convertAHPToChart))
     },
   },
 }
