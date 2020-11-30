@@ -153,7 +153,7 @@ export default {
       return [ref.toString()].concat(alternatives.map((a) => a.toString()))
     },
     _getChartDataset() {
-      const row = this.comparison.dm[this.referenceRow].slice()
+      const row = this.comparison.dm.matrix[this.referenceRow].slice()
 
       row.splice(this.referenceRow, 1)
 
