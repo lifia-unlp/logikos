@@ -22,7 +22,19 @@
           the one with the anchor icon. Is it better? Is it worse? how much
           better/worse?
         </p>
-
+        <ul>
+          <li
+            v-for="(a, i) in comparison.alternatives"
+            :key="i"
+            @click="anchor(i)"
+            class="cursor-pointer"
+          >
+            <div v-if="referenceRow === i">{{ a.toString() }} - ANCLADO</div>
+            <div v-else>
+              {{ a.toString() }}
+            </div>
+          </li>
+        </ul>
         <button
           class="mt-2 text-sm text-secondary"
           @click="showDetails = !showDetails"
@@ -95,6 +107,7 @@ export default {
   data() {
     return {
       lineChart: {},
+      referenceRow: 0,
       showDetails: false,
     }
   },
@@ -111,14 +124,7 @@ export default {
       comparisonChartConfig
     )
 
-    this.lineChart.data.labels = this.comparison.alternatives.map((a) =>
-      a.toString()
-    )
-    this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0].map(
-      convertAHPToChart
-    )
-
-    this.lineChart.update()
+    this._setChartLabelsAndDataset()
   },
   methods: {
     invert(row, col) {
@@ -127,9 +133,15 @@ export default {
       this.$set(this.comparison.dm.matrix, col, this.comparison.dm.matrix[col])
     },
 
-    lineChartDragAction(e, datasetIndex, column, value) {
-      this.comparison.dm.setCell(0, column, convertChartToAHP(value))
-      this.comparison.dm.autocomplete3()
+    lineChartDragAction(e, datasetIndex, point, value) {
+      const column = point > this.referenceRow ? point : point - 1
+
+      this.comparison.dm.setCell(
+        this.referenceRow,
+        column,
+        convertChartToAHP(value)
+      )
+      this.comparison.dm.autocomplete3(this.referenceRow)
 
       this.$forceUpdate()
     },
@@ -138,6 +150,32 @@ export default {
     },
     save() {
       this.$emit('comparison:rank', this.comparison)
+    },
+    anchor(i) {
+      if (i !== this.referenceRow) {
+        this.referenceRow = i
+        this._setChartLabelsAndDataset()
+      }
+    },
+    _setChartLabelsAndDataset() {
+      this.lineChart.data.labels = this._getChartLabels()
+      this.lineChart.data.datasets[0].data = this._getChartDataset()
+
+      this.lineChart.update()
+    },
+    _getChartLabels() {
+      const alternatives = this.comparison.alternatives.slice()
+
+      const ref = alternatives.splice(this.referenceRow, 1)
+
+      return [ref.toString()].concat(alternatives.map((a) => a.toString()))
+    },
+    _getChartDataset() {
+      const row = this.comparison.dm.matrix[this.referenceRow].slice()
+
+      row.splice(this.referenceRow, 1)
+
+      return [0].concat(row.map(convertAHPToChart))
     },
   },
 }
