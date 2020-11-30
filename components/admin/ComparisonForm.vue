@@ -22,7 +22,19 @@
           the one with the anchor icon. Is it better? Is it worse? how much
           better/worse?
         </p>
-
+        <ul>
+          <li
+            v-for="(a, i) in comparison.alternatives"
+            :key="i"
+            @click="anchor(i)"
+            class="cursor-pointer"
+          >
+            <div v-if="referenceRow === i">{{ a.toString() }} - ANCLADO</div>
+            <div v-else>
+              {{ a.toString() }}
+            </div>
+          </li>
+        </ul>
         <button
           class="mt-2 text-sm text-secondary"
           @click="showDetails = !showDetails"
@@ -138,6 +150,12 @@ export default {
     },
     save() {
       this.$emit('comparison:rank', this.comparison)
+    },
+    anchor(i) {
+      if (i !== this.referenceRow) {
+        this.referenceRow = i
+        this._setChartLabelsAndDataset()
+      }
     },
     _setChartLabelsAndDataset() {
       this.lineChart.data.labels = this._getChartLabels()
