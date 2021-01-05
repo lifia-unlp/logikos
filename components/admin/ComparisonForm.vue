@@ -22,19 +22,6 @@
           the one with the anchor icon. Is it better? Is it worse? how much
           better/worse?
         </p>
-        <ul>
-          <li
-            v-for="(a, i) in comparison.alternatives"
-            :key="i"
-            @click="anchor(i)"
-            class="cursor-pointer"
-          >
-            <div v-if="referenceRow === i">{{ a.toString() }} - ANCLADO</div>
-            <div v-else>
-              {{ a.toString() }}
-            </div>
-          </li>
-        </ul>
         <button
           class="mt-2 text-sm text-secondary"
           @click="showDetails = !showDetails"
@@ -124,6 +111,10 @@ export default {
       comparisonChartConfig
     )
 
+    document
+      .getElementById('lineChart')
+      .addEventListener('dblclick', this.lineChartClickAction)
+
     this._setChartLabelsAndDataset()
   },
   methods: {
@@ -132,18 +123,22 @@ export default {
 
       this.$set(this.comparison.dm.matrix, col, this.comparison.dm.matrix[col])
     },
-
+    lineChartClickAction(e) {
+      const chartElement = this.lineChart.getElementAtEvent(e)
+      if (chartElement.length > 0) {
+        this.anchor(this._convertChartIndexToMatrix(chartElement[0]._index))
+      }
+    },
     lineChartDragAction(e, datasetIndex, point, value) {
-      const column = point > this.referenceRow ? point : point - 1
+      const column = this._convertChartIndexToMatrix(point)
+      const ahpValue = convertChartToAHP(value)
 
-      this.comparison.dm.setCell(
-        this.referenceRow,
-        column,
-        convertChartToAHP(value)
-      )
-      this.comparison.dm.autocomplete3(this.referenceRow)
+      if (ahpValue !== this.comparison.dm.matrix[this.referenceRow][column]) {
+        this.comparison.dm.setCell(this.referenceRow, column, ahpValue)
+        this.comparison.dm.autocomplete3(this.referenceRow)
 
-      this.$forceUpdate()
+        this.$forceUpdate()
+      }
     },
     cancel() {
       this.$emit('cancel')
@@ -156,6 +151,9 @@ export default {
         this.referenceRow = i
         this._setChartLabelsAndDataset()
       }
+    },
+    _convertChartIndexToMatrix(index) {
+      return index > this.referenceRow ? index : index - 1
     },
     _setChartLabelsAndDataset() {
       this.lineChart.data.labels = this._getChartLabels()
@@ -170,6 +168,8 @@ export default {
 
       return [ref.toString()].concat(alternatives.map((a) => a.toString()))
     },
+    // Dataset is 0 followed by the referenceRow with value at column
+    // referenceRow removed
     _getChartDataset() {
       const row = this.comparison.dm.matrix[this.referenceRow].slice()
 

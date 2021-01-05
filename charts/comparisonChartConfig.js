@@ -28,11 +28,11 @@ const AHP_DEFINITIONS = {
   '-6': 'Muy fuertemente peor',
   '-4': 'Fuertemente peor',
   '-2': 'Moderadamente peor',
-  '0': 'Igual importancia',
-  '2': 'Moderada importancia',
-  '4': 'Importancia fuerte',
-  '6': 'Importancia muy fuerte',
-  '8': 'Importancia extrema',
+  '0': 'Igual',
+  '2': 'Moderadamente mejor',
+  '4': 'Fuertemente mejor',
+  '6': 'Muy fuertemente mejor',
+  '8': 'Extremadamente mejor',
 }
 
 // Use conversion table on top
@@ -57,18 +57,6 @@ export default {
     ],
   },
   options: {
-    dragData: true,
-    dragOptions: {
-      magnet: {
-        to: Math.round,
-      },
-    },
-    onDragStart(e, element) {
-      if (element._index === 0) return false
-    },
-    // onDragEnd: function (e, datasetIndex, index, value) {
-    //   dragEndHandler(index, value)
-    // },
     legend: {
       display: false,
     },
@@ -86,5 +74,17 @@ export default {
         },
       ],
     },
+    dragData: true,
+    dragOptions: {
+      magnet: {
+        to: Math.round,
+      },
+    },
+    onDragStart(e, element) {
+      if (element._index === 0) return false
+    },
+    // onDragEnd: function (e, datasetIndex, index, value) {
+    //   dragEndHandler(index, value)
+    // },
   },
 }
