@@ -62,11 +62,13 @@ export default {
   },
   methods: {
     _updatePieChart() {
-      this.pieChart.data.labels = this.profile.criteria.map((c) => c.name)
+      this.pieChart.data.labels = this.profile
+        .getComparableCriteria()
+        .map((c) => c.name)
 
-      this.pieChart.data.datasets[0].data = this.profile.criteria.map((c) =>
-        c.absoluteWeight()
-      )
+      this.pieChart.data.datasets[0].data = this.profile
+        .getComparableCriteria()
+        .map((c) => c.absoluteWeight())
 
       this.pieChart.update()
     },
