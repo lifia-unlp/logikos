@@ -70,8 +70,16 @@
 <script>
 import Comparison from '@/models/Comparison'
 import Profile from '@/models/Profile'
+import Criterion from '@/models/Criterion'
 
 export default {
+  beforeMount() {
+    if (this.$route.query.criteria) {
+      this.$route.query.criteria.map((c) =>
+        this.profile.addCriterion(new Criterion(c))
+      )
+    }
+  },
   data() {
     return {
       profile: new Profile(),
