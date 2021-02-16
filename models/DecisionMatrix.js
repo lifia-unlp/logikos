@@ -15,7 +15,7 @@ const CONSISTENCY_INDEXES = Object.freeze([
   1.49,
 ])
 
-const VALID_VALUES = Object.freeze([
+export const VALID_VALUES = Object.freeze([
   1 / 2,
   1 / 3,
   1 / 4,
