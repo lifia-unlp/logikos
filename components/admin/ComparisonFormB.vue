@@ -96,6 +96,7 @@ export default {
       lineChart: {},
       referenceRow: 0,
       showDetails: false,
+      interactionsCount: 0,
     }
   },
   computed: {
@@ -138,6 +139,9 @@ export default {
         this.comparison.dm.autocomplete3(this.referenceRow)
 
         this.$forceUpdate()
+
+        this.interactionsCount++
+        console.log('Total interactions: ', this.interactionsCount)
       }
     },
     cancel() {

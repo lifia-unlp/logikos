@@ -135,6 +135,7 @@ export default {
   data() {
     return {
       showDetails: false,
+      interactionsCount: 0,
     }
   },
   computed: {
@@ -159,11 +160,13 @@ export default {
   },
   methods: {
     setCell(row, col, value) {
-      console.log(row, col, value)
-
       this.comparison.dm.setCell(row, col, value)
 
       this.$set(this.comparison.dm.matrix, col, this.comparison.dm.matrix[col])
+
+      this.interactionsCount++
+
+      console.log('Total interactions: ', this.interactionsCount)
     },
     invert(row, col) {
       this.comparison.dm.setReciprocalValue(col, row)
