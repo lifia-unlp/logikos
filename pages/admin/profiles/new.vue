@@ -47,12 +47,13 @@
       </div>
 
       <div v-if="showComparisonForm" class="col-span-8 box">
-        <ComparisonForm
+        <component
+          :is="comparisonWidget"
           :comparison="comparison"
           @comparison:rank="compare"
           @cancel="cancelForm('comparison')"
         >
-        </ComparisonForm>
+        </component>
       </div>
     </div>
 
@@ -73,6 +74,10 @@ import Profile from '@/models/Profile'
 import Criterion from '@/models/Criterion'
 
 export default {
+  components: {
+    ComparisonFormA: () => import('@/components/admin/ComparisonFormA'),
+    ComparisonFormB: () => import('@/components/admin/ComparisonFormB'),
+  },
   beforeMount() {
     if (this.$route.query.criteria) {
       this.$route.query.criteria.map((c) =>
@@ -90,6 +95,11 @@ export default {
       criterion: null,
       comparison: null,
     }
+  },
+  computed: {
+    comparisonWidget() {
+      return 'ComparisonForm' + (this.$route.query.widget || 'B').toUpperCase()
+    },
   },
   methods: {
     cancelForm(form) {

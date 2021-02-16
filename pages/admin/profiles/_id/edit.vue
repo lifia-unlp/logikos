@@ -47,12 +47,13 @@
       </div>
 
       <div v-if="showComparisonForm" class="col-span-8 box">
-        <ComparisonForm
+        <component
+          :is="comparisonWidget"
           :comparison="comparison"
           @comparison:rank="compare"
           @cancel="cancelForm('comparison')"
         >
-        </ComparisonForm>
+        </component>
       </div>
     </div>
 
@@ -73,6 +74,10 @@ import Comparison from '@/models/Comparison'
 import _ from 'lodash'
 
 export default {
+  components: {
+    ComparisonFormA: () => import('@/components/admin/ComparisonFormA'),
+    ComparisonFormB: () => import('@/components/admin/ComparisonFormB'),
+  },
   data() {
     return {
       profile: {},
@@ -91,6 +96,11 @@ export default {
     )
 
     this.originalName = this.profile.name
+  },
+  computed: {
+    comparisonWidget() {
+      return 'ComparisonForm' + (this.$route.query.widget || 'B').toUpperCase()
+    },
   },
   methods: {
     cancelForm(form) {
