@@ -80,6 +80,7 @@ export default {
       showCriterionForm: false,
       showComparisonForm: false,
       parentCriterion: null,
+      editingCriterion: null,
       criterion: null,
       comparison: null,
     }
