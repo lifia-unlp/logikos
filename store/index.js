@@ -1,6 +1,8 @@
 import Profile from '@/models/Profile'
 import Axios from 'axios'
 
+const BASE_URL = 'http://localhost:9000'
+
 export const state = () => ({
   profiles: [],
 })
@@ -35,7 +37,7 @@ export const mutations = {
 
 export const actions = {
   async fetchProfiles(context, payload) {
-    const { data } = await Axios.get('http://localhost:9000/profiles')
+    const { data } = await Axios.get(`${BASE_URL}/profiles`)
     context.commit(
       'setProfiles',
       data.map((d) => Profile.deserealize(d))
@@ -45,7 +47,7 @@ export const actions = {
   async addProfile(context, payload) {
     const { data } = await Axios({
       method: 'post',
-      url: 'http://localhost:9000/profiles',
+      url: `${BASE_URL}/profiles`,
       data: payload,
       transformRequest: [
         function (data, headers) {
@@ -63,7 +65,7 @@ export const actions = {
   async updateProfile(context, profile) {
     await Axios({
       method: 'put',
-      url: `http://localhost:9000/profiles/${profile._id}`,
+      url: `${BASE_URL}/profiles/${profile._id}`,
       data: profile,
       transformRequest: [
         function (data, headers) {
@@ -79,7 +81,7 @@ export const actions = {
   },
 
   async removeProfile(context, profileId) {
-    await Axios.delete(`http://localhost:9000/profiles/${profileId}`)
+    await Axios.delete(`${BASE_URL}/profiles/${profileId}`)
 
     context.commit('removeProfile', profileId)
   },
