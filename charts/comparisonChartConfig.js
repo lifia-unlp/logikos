@@ -24,15 +24,15 @@
 //   Ej. Storage 8GB vs 32GB chart: 4 matrix: 1/4
 
 const AHP_DEFINITIONS = {
-  '-8': 'Extremadamente peor',
-  '-6': 'Muy fuertemente peor',
-  '-4': 'Fuertemente peor',
-  '-2': 'Moderadamente peor',
-  '0': 'Igual',
-  '2': 'Moderadamente mejor',
-  '4': 'Fuertemente mejor',
-  '6': 'Muy fuertemente mejor',
-  '8': 'Extremadamente mejor',
+  '-8': 'Extremely worst',
+  '-6': 'Very strongly worst',
+  '-4': 'Strongly worst',
+  '-2': 'Moderately worst',
+  '0': 'Equal',
+  '2': 'Moderately better',
+  '4': 'Strongly better',
+  '6': 'Very strongly better',
+  '8': 'Extremely better',
 }
 
 // Use conversion table on top
@@ -67,6 +67,8 @@ export default {
             max: 8,
             min: -8,
             stepSize: 1,
+            fontSize: 12,
+            fontStyle: 'bold',
             callback(value, index, values) {
               return value in AHP_DEFINITIONS ? AHP_DEFINITIONS[value] : '-'
             },
