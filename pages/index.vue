@@ -1,30 +1,11 @@
 <template>
   <div>
-    <!--<div class="my-2">
-      <label>Profile</label>
-      <select v-model="selectedProfileId" class="profile-select">
-        <option v-for="(profile, i) in profiles" :key="i" :value="profile._id">
-          {{ profile.name }}
-        </option>
-      </select>
-    </div>-->
-    <Phone
+    <Alternative
       v-for="(alternative, key) in alternatives"
       :key="key"
-      :phone="alternative"
+      :alternative="alternative"
     >
-    </Phone>
-
-    <div class="mt-4">
-      <input
-        v-model="alternativeUrl"
-        class="border rounded px-2 py-1 w-2/3"
-        type="text"
-      />
-      <button class="default-button" @click="fetchAlternative()">
-        Add
-      </button>
-    </div>
+    </Alternative>
 
     <div class="mt-4 flex justify-end">
       <nuxt-link to="/selectProfile" v-if="alternatives.length > 1" class="btn">
@@ -39,9 +20,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
-
-// import Comparison from '@/models/Comparison'
 
 export default {
   layout: 'frontend',
@@ -50,51 +28,30 @@ export default {
       alternativeUrl: '',
     }
   },
-  computed: {
-    // ...mapState(['profiles']),
-    // ...mapState('frontend', ['comparisons', 'alternatives']),
-    // selectedProfileId: {
-    //  get() {
-    //    return this.$store.state.frontend.selectedProfileId
-    //  },
-    //  set(value) {
-    //    this.$store.commit('frontend/setSelectedProfileId', value)
-    //  },
-    //  },
-    ...mapState('frontend', ['alternatives']),
-    // currentProfile() {
-    //  return this.$store.getters.getProfileById(this.selectedProfileId)
-    // },
+  beforeCreate() {
+    const alternatives = [
+      {
+        label: 'Bariloche',
+        price: 70000,
+        description:
+          'Bariloche es un destino turístico para los amantes de la naturaleza y la aventura. Se puede realizar el paseo a Circuito Chico bordeando los Lagos Nahuel Huapi y Moreno, y desde allí subir al cerro Campanario en aerosilla para tener vistas de los alrededores. Puede ascender el cerro catedral o si es un escalador experimentado puede enfrentarse al desafío del cerro Tronador. A pocos kilómetros de la ciudad puede hacer trekking en el parque nacional Nahuel Huapi o realizar el camino de los 7 lagos, donde encontrará postales únicas de la Patagonia.',
+      },
+      {
+        label: 'Mendoza',
+        price: 60000,
+        description:
+          'La tierra del Malbec. Deguste vino en distintas bodegas con un paisaje andino alucinante. Puede realizar trekking a los pies del Aconcagua, la cima más alta de las américas o en el cañón del Atuel, donde se ven formaciones rocosas de una gran belleza. Si le gusta esquiar puede ir a Las Leñas donde se encuentra uno de los centros de ski más importante de América Latina. Conozca las pequeñas localidades escondidas en la provincia y sus atractivos únicos como el dique Potrerillos o las termas de Cacheuta.',
+      },
+    ]
+
+    this.$store.commit('frontend/setAlternatives', [])
+
+    for (const alternative of alternatives) {
+      this.$store.commit('frontend/addAlternative', alternative)
+    }
   },
-  // watch: {
-  //  selectedProfileId(newId, oldId) {
-  //    this.loadComparisons()
-  //  },
-  // },
-  // created() {
-  //  this.$store.dispatch('fetchProfiles')
-  // },
-  methods: {
-    fetchAlternative() {
-      if (!this.alternatives.find((a) => a.url === this.alternativeUrl)) {
-        axios
-          .get(`http://localhost:9000/alternative?url=${this.alternativeUrl}`)
-          .then((response) => {
-            if (!('error' in response.data)) {
-              this.$store.commit('frontend/addAlternative', response.data)
-              this.alternativeUrl = ''
-            }
-          })
-      }
-    },
-    // loadComparisons() {
-    //  this.$store.commit(
-    //    'frontend/setComparisons',
-    //    this.currentProfile
-    //      .getComparableCriteria()
-    //      .map((c) => new Comparison(this.alternatives, c))
-    //  )
-    // },
+  computed: {
+    ...mapState('frontend', ['alternatives']),
   },
 }
 </script>
@@ -107,22 +64,4 @@ export default {
 .btn--disabled {
   @apply bg-gray-200 text-gray-400;
 }
-
-/*
-.profile-select {
-  @apply appearance-none w-2/3 bg-white border border-gray-400 px-2 py-1 pr-8 rounded shadow leading-tight;
-}
-
-.profile-select:hover {
-  @apply border-gray-500;
-}
-
-.profile-select:focus {
-  @apply outline-none shadow-outline;
-}
-
-.default-button {
-  @apply px-2 py-1 border rounded;
-}
-*/
 </style>
