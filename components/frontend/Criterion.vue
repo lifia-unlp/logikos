@@ -5,15 +5,10 @@
         <div class="criterion__weight">{{ weight }}%</div>
       </div>
       <div class="w-10/12 criterion__name">
-        <div class="w-10/12">
+        <div class="w-9/12">
           {{ criterion.name }}
         </div>
-        <div class="w-2/12">
-          <font-awesome-icon
-            v-if="criterion.shouldBeCompared() && criterion.hasPreset()"
-            :icon="['fas', 'bolt']"
-            class="criterion__action-btn"
-          />
+        <div class="w-3/12">
           <font-awesome-icon
             v-if="
               criterion.shouldBeCompared() &&
@@ -23,6 +18,28 @@
             :icon="['fas', 'check']"
             class="criterion__action-btn"
           />
+
+          <template v-else>
+            <nuxt-link
+              :to="{
+                name: 'compare',
+                query: { criterion: criterion.name, widget: 'A' },
+              }"
+            >
+              A
+              <font-awesome-icon :icon="['fas', 'sort-amount-down']" />
+            </nuxt-link>
+
+            <nuxt-link
+              :to="{
+                name: 'compare',
+                query: { criterion: criterion.name, widget: 'B' },
+              }"
+            >
+              B
+              <font-awesome-icon :icon="['fas', 'sort-amount-down']" />
+            </nuxt-link>
+          </template>
         </div>
       </div>
     </div>
@@ -39,8 +56,6 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-
 export default {
   name: 'Criterion',
   props: {

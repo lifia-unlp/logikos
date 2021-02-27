@@ -9,19 +9,23 @@
       </select>
     </div>
 
-    <div v-if="selectedProfileId" class="mt-4">
-      <p class="text-secondary text-sm">{{ currentProfile.description }}</p>
+    <div v-show="selectedProfileId" class="mt-4">
+      <p v-if="selectedProfileId" class="text-secondary text-sm">
+        {{ currentProfile.description }}
+      </p>
 
       <div class="w-full h-full">
         <canvas id="pieChart"></canvas>
       </div>
 
-      <Criterion
-        v-for="(criterion, i) in currentProfile.criteria"
-        :key="i"
-        :criterion="criterion"
-      >
-      </Criterion>
+      <template v-if="selectedProfileId">
+        <Criterion
+          v-for="(criterion, i) in currentProfile.criteria"
+          :key="i"
+          :criterion="criterion"
+        >
+        </Criterion>
+      </template>
     </div>
 
     <div class="flex justify-between">
@@ -40,7 +44,6 @@ import Comparison from '@/models/Comparison.js'
 
 import { mapState } from 'vuex'
 import Chart from 'chart.js'
-// import axios from 'axios'
 
 export default {
   layout: 'frontend',
@@ -63,6 +66,21 @@ export default {
     currentProfile() {
       return this.$store.getters.getProfileById(this.selectedProfileId)
     },
+  },
+  watch: {
+    selectedProfileId(newId, oldId) {
+      this._updatePieChart()
+      this._loadComparisons()
+    },
+  },
+  created() {
+    this.$store.dispatch('fetchProfiles')
+  },
+  mounted() {
+    if (this.selectedProfileId !== null) {
+      this._updatePieChart()
+      this._loadComparisons()
+    }
   },
   methods: {
     _updatePieChart() {
@@ -92,29 +110,11 @@ export default {
       const comparisons = {}
 
       for (const criterion of criteria) {
-        const comp = new Comparison(this.alternatives)
-        comp.loadPreset(criterion)
-
-        comparisons[criterion.name] = comp
+        comparisons[criterion.name] = new Comparison(this.alternatives)
       }
 
       this.$store.commit('frontend/setComparisons', comparisons)
     },
-  },
-  watch: {
-    selectedProfileId(newId, oldId) {
-      this._updatePieChart()
-      this._loadComparisons()
-    },
-  },
-  created() {
-    this.$store.dispatch('fetchProfiles')
-  },
-  mounted() {
-    if (this.selectedProfileId !== null) {
-      this._updatePieChart()
-      this._loadComparisons()
-    }
   },
 }
 </script>
