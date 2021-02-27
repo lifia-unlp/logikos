@@ -5,13 +5,13 @@
     </div>
 
     <div class="border-l-2 border-logikos-orange pl-2 col-span-1">
-      <img class="w-12" :src="rank.alternative.image" />
+      <img class="w-12" :src="rank.alternative.thumb" />
     </div>
 
     <div class="col-span-7">
       <p class="text-lg text-logikos">
         <a :href="rank.alternative.url" target="_blank">
-          {{ rank.alternative.model }}
+          {{ rank.alternative.label }}
         </a>
       </p>
     </div>

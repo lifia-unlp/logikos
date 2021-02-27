@@ -1,14 +1,12 @@
 <template>
   <div>
-    <h1 class="text-4xl">{{ comparison.criterion.name }}</h1>
+    <h1 class="text-4xl">{{ criterion }}</h1>
 
-    <div class="w-1/2">
+    <div class="w-full">
       <canvas id="lineChart"></canvas>
     </div>
 
-    <nuxt-link class="py-1 px-2 border-2 rounded font-bold text-xs" to="/">
-      Volver
-    </nuxt-link>
+    <nuxt-link class="btn" to="/selectProfile">Volver</nuxt-link>
   </div>
 </template>
 
@@ -22,6 +20,7 @@ import Chart from 'chart.js'
 import 'chartjs-plugin-dragdata'
 
 export default {
+  layout: 'frontend',
   data() {
     return {
       lineChart: {},
@@ -29,7 +28,10 @@ export default {
   },
   computed: {
     comparison() {
-      return this.$store.state.frontend.comparisons[this.$route.params.id]
+      return this.$store.state.frontend.comparisons[this.criterion]
+    },
+    criterion() {
+      return this.$route.query.criterion
     },
   },
   mounted() {
@@ -41,7 +43,7 @@ export default {
     )
 
     this.lineChart.data.labels = this.comparison.alternatives.map(
-      (a) => `${a.model} - ${a[this.comparison.criterion.getAttribute()]}`
+      (a) => `${a.label} - ${a[this.criterion]}`
     )
     this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0].map(
       convertAHPToChart
@@ -52,9 +54,14 @@ export default {
   methods: {
     lineChartDragAction(e, datasetIndex, column, value) {
       this.comparison.dm.setCell(0, column, convertChartToAHP(value))
-      this.comparison.dm.autocomplete2()
-      this.$store.commit('frontend/setCompared', this.$route.params.id)
+      this.comparison.dm.autocomplete3()
+      this.$store.commit('frontend/setCompared', this.criterion)
     },
   },
 }
 </script>
+<style>
+.btn {
+  @apply py-1 px-2 bg-secondary text-white font-bold;
+}
+</style>
