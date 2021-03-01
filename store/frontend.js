@@ -25,15 +25,17 @@ export const mutations = {
     state.comparisons = comparisons
   },
 
+  updateComparison(state, payload) {
+    state.comparisons[payload.id] = payload.comparison
+  },
+
   setCompared(state, comparisonId) {
     state.comparisons[comparisonId].isCompared = true
   },
+}
 
-  addComparison(state, comparison) {
-    state.comparisons.push(comparison)
-  },
-
-  removeComparison(state, comparisonId) {
-    state.comparisons.splice(comparisonId, 1)
+export const getters = {
+  getComparisonByCriterion: (state) => (criterion) => {
+    return state.comparisons[criterion]
   },
 }
