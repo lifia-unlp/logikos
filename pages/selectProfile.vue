@@ -79,7 +79,6 @@ export default {
   mounted() {
     if (this.selectedProfileId !== null) {
       this._updatePieChart()
-      this._loadComparisons()
     }
   },
   methods: {
