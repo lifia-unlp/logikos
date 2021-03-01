@@ -20,11 +20,16 @@
 import Ranking from '@/models/Ranking'
 
 export default {
+  layout: 'frontend',
   computed: {
     rank() {
-      const r = Ranking.combine(
-        this.$store.state.frontend.comparisons.map((c) => c.rank())
-      )
+      const ranks = []
+
+      for (const criterion in this.$store.state.frontend.comparisons) {
+        ranks.push(this.$store.state.frontend.comparisons[criterion].rank())
+      }
+
+      const r = Ranking.combine(ranks)
 
       r.sort()
 
