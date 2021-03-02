@@ -10,9 +10,9 @@
     </Alternative>
 
     <div class="mt-4 flex justify-end">
-      <nuxt-link to="/selectProfile" v-if="alternatives.length > 1" class="btn">
+      <button @click="nextPage" v-if="alternatives.length > 1" class="btn">
         Next
-      </nuxt-link>
+      </button>
       <a v-else class="btn btn--disabled">
         Next
       </a>
@@ -45,6 +45,11 @@ export default {
       }
 
       reader.readAsText(event.target.files[0])
+    },
+    nextPage() {
+      this.$store.commit('frontend/startExperiment')
+
+      this.$router.push('/selectProfile')
     },
   },
 }

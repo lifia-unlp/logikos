@@ -2,6 +2,7 @@ export const state = () => ({
   selectedProfileId: null,
   alternatives: [],
   comparisons: [],
+  statistics: {},
 })
 
 export const mutations = {
@@ -29,8 +30,27 @@ export const mutations = {
     state.comparisons[payload.id] = payload.comparison
   },
 
-  setCompared(state, comparisonId) {
-    state.comparisons[comparisonId].isCompared = true
+  startExperiment(state) {
+    state.statistics.startTime = performance.now()
+  },
+
+  endExperiment(state) {
+    state.statistics.endTime = performance.now()
+  },
+
+  startComparison(state, payload) {
+    state.statistics[payload.criterion] = {}
+    state.statistics[payload.criterion].startTime = performance.now()
+    state.statistics[payload.criterion].widget = payload.widget
+    state.statistics[payload.criterion].clicks = 0
+  },
+
+  registerClick(state, criterion) {
+    state.statistics[criterion].clicks++
+  },
+
+  endComparison(state, criterion) {
+    state.statistics[criterion].endTime = performance.now()
   },
 }
 

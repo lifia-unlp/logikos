@@ -32,9 +32,9 @@
       <nuxt-link to="/">
         Go back
       </nuxt-link>
-      <nuxt-link to="/rank" class="btn">
+      <button @click="nextPage" class="btn">
         Finish
-      </nuxt-link>
+      </button>
     </div>
   </div>
 </template>
@@ -113,6 +113,11 @@ export default {
       }
 
       this.$store.commit('frontend/setComparisons', comparisons)
+    },
+    nextPage() {
+      this.$store.commit('frontend/endExperiment')
+
+      this.$router.push('/rank')
     },
   },
 }

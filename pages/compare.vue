@@ -2,7 +2,11 @@
   <div>
     <h1 class="text-4xl">{{ criterion }}</h1>
 
-    <component :is="comparisonWidget" :comparison="comparison"></component>
+    <component
+      :is="comparisonWidget"
+      :comparison="comparison"
+      :criterion="criterion"
+    ></component>
 
     <nuxt-link class="btn" to="/selectProfile">Back</nuxt-link>
     <button @click="saveComparison" class="btn">Save</button>
@@ -37,6 +41,11 @@ export default {
     this.comparison = _.cloneDeep(
       this.$store.getters['frontend/getComparisonByCriterion'](this.criterion)
     )
+
+    this.$store.commit('frontend/startComparison', {
+      criterion: this.criterion,
+      widget: this.$route.query.widget,
+    })
   },
   methods: {
     saveComparison() {
@@ -44,6 +53,8 @@ export default {
         id: this.criterion,
         comparison: this.comparison,
       })
+
+      this.$store.commit('frontend/endComparison', this.criterion)
 
       this.$router.push('/selectProfile')
     },
