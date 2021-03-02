@@ -21,6 +21,7 @@ import 'chartjs-plugin-dragdata'
 export default {
   props: {
     comparison: Object,
+    criterion: String,
   },
   mounted() {
     comparisonChartConfig.options.onDragEnd = this.lineChartDragAction
@@ -31,7 +32,6 @@ export default {
     )
 
     this.lineChart.data.labels = this.comparison.alternatives.map(
-      // (a) => `${a.label} - ${a[this.criterion]}`
       (a) => a.label
     )
     this.lineChart.data.datasets[0].data = this.comparison.dm.matrix[0].map(
@@ -45,6 +45,8 @@ export default {
       this.comparison.dm.setCell(0, column, convertChartToAHP(value))
       this.comparison.dm.autocomplete3()
       this.comparison.isCompared = true
+
+      this.$store.commit('frontend/registerClick', this.criterion)
     },
   },
 }

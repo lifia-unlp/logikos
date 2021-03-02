@@ -61,6 +61,7 @@ import { VALID_VALUES } from '@/models/DecisionMatrix.js'
 export default {
   props: {
     comparison: Object,
+    criterion: String,
   },
   computed: {
     ahpValues() {
@@ -86,6 +87,8 @@ export default {
       this.$set(this.comparison.dm.matrix, col, this.comparison.dm.matrix[col])
 
       this.comparison.isCompared = true
+
+      this.$store.commit('frontend/registerClick', this.criterion)
     },
   },
 }
