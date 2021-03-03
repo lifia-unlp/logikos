@@ -32,9 +32,9 @@
       <nuxt-link to="/">
         Go back
       </nuxt-link>
-      <nuxt-link to="/rank" class="btn">
+      <button v-if="currentProfile" @click="nextPage" class="btn">
         Finish
-      </nuxt-link>
+      </button>
     </div>
   </div>
 </template>
@@ -65,6 +65,13 @@ export default {
     },
     currentProfile() {
       return this.$store.getters.getProfileById(this.selectedProfileId)
+    },
+    doneComparisons() {
+      for (const c in this.$store.state.frontend.comparisons) {
+        if (!c.isCompared) return false
+      }
+
+      return true
     },
   },
   watch: {
@@ -113,6 +120,11 @@ export default {
       }
 
       this.$store.commit('frontend/setComparisons', comparisons)
+    },
+    nextPage() {
+      this.$store.commit('frontend/endExperiment')
+
+      this.$router.push('/rank')
     },
   },
 }
