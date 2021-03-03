@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   selectedProfileId: null,
   alternatives: [],
@@ -27,7 +29,8 @@ export const mutations = {
   },
 
   updateComparison(state, payload) {
-    state.comparisons[payload.id] = payload.comparison
+    // state.comparisons[payload.id] = payload.comparison
+    Vue.set(state.comparisons, payload.id, payload.comparison)
   },
 
   startExperiment(state) {

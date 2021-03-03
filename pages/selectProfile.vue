@@ -32,7 +32,7 @@
       <nuxt-link to="/">
         Go back
       </nuxt-link>
-      <button @click="nextPage" class="btn">
+      <button v-if="currentProfile" @click="nextPage" class="btn">
         Finish
       </button>
     </div>
@@ -65,6 +65,13 @@ export default {
     },
     currentProfile() {
       return this.$store.getters.getProfileById(this.selectedProfileId)
+    },
+    doneComparisons() {
+      for (const c in this.$store.state.frontend.comparisons) {
+        if (!c.isCompared) return false
+      }
+
+      return true
     },
   },
   watch: {
