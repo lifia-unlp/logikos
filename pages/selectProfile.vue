@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1 class="text-4xl font-thin text-logikos">Profile</h1>
+
     <div class="my-2">
       <label>Profile</label>
       <select v-model="selectedProfileId" class="profile-select">
@@ -28,9 +30,9 @@
       </template>
     </div>
 
-    <div class="flex justify-between">
+    <div class="mt-8 flex justify-between">
       <nuxt-link to="/">
-        Go back
+        Back
       </nuxt-link>
       <button v-if="currentProfile" @click="nextPage" class="btn">
         Finish
@@ -44,6 +46,8 @@ import Comparison from '@/models/Comparison.js'
 
 import { mapState } from 'vuex'
 import Chart from 'chart.js'
+
+import _ from 'lodash'
 
 export default {
   layout: 'frontend',
@@ -90,6 +94,10 @@ export default {
   },
   methods: {
     _updatePieChart() {
+      if (!_.isEmpty(this.pieChart)) {
+        this.pieChart.destroy()
+      }
+
       this.pieChart = new Chart(document.getElementById('pieChart'), {
         type: 'pie',
         data: {

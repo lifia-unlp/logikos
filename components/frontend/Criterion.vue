@@ -25,6 +25,7 @@
                 name: 'compare',
                 query: { criterion: criterion.name, widget: 'A' },
               }"
+              class="text-gray-400 text-base cursor-pointer hover:text-accent"
             >
               A
               <font-awesome-icon :icon="['fas', 'sort-amount-down']" />
@@ -35,6 +36,7 @@
                 name: 'compare',
                 query: { criterion: criterion.name, widget: 'B' },
               }"
+              class="text-gray-400 text-base cursor-pointer hover:text-accent"
             >
               B
               <font-awesome-icon :icon="['fas', 'sort-amount-down']" />

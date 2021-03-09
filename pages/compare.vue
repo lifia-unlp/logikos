@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="text-4xl">{{ criterion }}</h1>
+    <h1 class="text-4xl font-thin text-logikos mb-4">
+      Compare by {{ criterion }}
+    </h1>
 
     <component
       :is="comparisonWidget"
@@ -8,8 +10,10 @@
       :criterion="criterion"
     ></component>
 
-    <nuxt-link class="btn" to="/selectProfile">Back</nuxt-link>
-    <button @click="saveComparison" class="btn">Save</button>
+    <div class="mt-8 flex justify-between">
+      <nuxt-link to="/selectProfile">Back</nuxt-link>
+      <button @click="saveComparison" class="btn">Save</button>
+    </div>
   </div>
 </template>
 
