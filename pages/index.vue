@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1 class="text-4xl font-thin text-logikos">Alternatives</h1>
+
     <input type="file" @change="loadAlternatives" accept="application/json" />
 
     <Alternative

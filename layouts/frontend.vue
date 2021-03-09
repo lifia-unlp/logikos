@@ -3,7 +3,6 @@
     <Menu></Menu>
 
     <div class="container mx-auto mt-2 px-4 py-2 w-4/12 bg-white shadow">
-      <h1 class="font-light mt-2 mb-4">Logikos</h1>
       <Nuxt />
     </div>
   </div>
