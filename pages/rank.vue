@@ -48,7 +48,13 @@ export default {
       return JSON.stringify(this.$store.state.frontend.statistics, null, 2)
     },
     comparisonsJSON() {
-      return JSON.stringify(this.$store.state.frontend.comparisons, null, 2)
+      const comparisons = this.$store.state.frontend.comparisons
+
+      for (const c in comparisons) {
+        comparisons[c].consistency = comparisons[c].dm.consistencyRatio()
+      }
+
+      return JSON.stringify(comparisons, null, 2)
     },
   },
 }
