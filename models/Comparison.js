@@ -1,5 +1,4 @@
 import DecisionMatrix from './DecisionMatrix'
-import Ranking from './Ranking'
 
 export default class {
   constructor(alternatives = []) {
@@ -41,11 +40,9 @@ export default class {
   }
 
   rank(absoluteWeight = 1) {
-    return new Ranking(
-      this.dm.weights().map((weight, idx) => ({
-        alternative: this.alternatives[idx],
-        weight: weight * absoluteWeight,
-      }))
-    )
+    return this.dm.weights().map((weight, idx) => ({
+      alternative: this.alternatives[idx],
+      weight: weight * absoluteWeight,
+    }))
   }
 }
