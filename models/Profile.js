@@ -37,6 +37,22 @@ class Profile {
     return _.flattenDeep(this.criteria.map((c) => c.getComparables()))
   }
 
+  getCriterionByName(criterionName) {
+    for (const criterion of this.criteria) {
+      if (criterion.name === criterionName) {
+        return criterion
+      } else {
+        const found = criterion.getCriterionByName(criterionName)
+
+        if (found !== null) {
+          return found
+        }
+      }
+    }
+
+    return null
+  }
+
   _distribuiteWeights() {
     for (const criterion of this.criteria) {
       criterion.weight = 1 / this.criteria.length
