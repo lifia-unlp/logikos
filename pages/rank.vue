@@ -29,20 +29,29 @@
 <script>
 import Ranking from '@/models/Ranking'
 
+import { mapState } from 'vuex'
+
 export default {
   computed: {
+    ...mapState('frontend', ['comparisons']),
     rank() {
       const ranks = []
 
-      for (const criterion in this.$store.state.frontend.comparisons) {
-        ranks.push(this.$store.state.frontend.comparisons[criterion].rank())
+      for (const criterion in this.comparisons) {
+        const c = this.currentProfile.getCriterionByName(criterion)
+        ranks.push(this.comparisons[criterion].rank(c.absoluteWeight()))
       }
-
+      console.log('ranks: ', ranks)
       const r = Ranking.combine(ranks)
 
       r.sort()
 
       return r
+    },
+    currentProfile() {
+      return this.$store.getters.getProfileById(
+        this.$store.state.frontend.selectedProfileId
+      )
     },
     statisticsJSON() {
       return JSON.stringify(this.$store.state.frontend.statistics, null, 2)

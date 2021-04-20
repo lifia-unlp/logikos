@@ -41,6 +41,22 @@ class Criterion {
     }
   }
 
+  getCriterionByName(criterionName) {
+    for (const criterion of this.subcriteria) {
+      if (criterion.name === criterionName) {
+        return criterion
+      } else {
+        const found = criterion.getCriterionByName(criterionName)
+
+        if (found !== null) {
+          return found
+        }
+      }
+    }
+
+    return null
+  }
+
   shouldBeCompared() {
     return this.subcriteria.length === 0
   }

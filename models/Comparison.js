@@ -1,5 +1,4 @@
 import DecisionMatrix from './DecisionMatrix'
-import Ranking from './Ranking'
 
 export default class {
   constructor(alternatives = []) {
@@ -40,16 +39,10 @@ export default class {
     }
   }
 
-  // TODO improve this, maybe add a "absolute weights" boolean argument
-  rank() {
-    const absoluteWeight = 1
-    // FIXME this.criterion !== null ? this.criterion.absoluteWeight() : 1
-
-    return new Ranking(
-      this.dm.weights().map((weight, idx) => ({
-        alternative: this.alternatives[idx],
-        weight: weight * absoluteWeight,
-      }))
-    )
+  rank(absoluteWeight = 1) {
+    return this.dm.weights().map((weight, idx) => ({
+      alternative: this.alternatives[idx],
+      weight: weight * absoluteWeight,
+    }))
   }
 }

@@ -10,11 +10,15 @@ class Ranking {
   }
 
   static combine(rankings) {
-    const r = [...rankings[0].ranking]
+    const r = []
 
-    for (let i = 1; i < rankings.length; i++) {
+    for (let i = 0; i < rankings.length; i++) {
       for (let j = 0; j < rankings[i].length; j++) {
-        r[j].weight += rankings[i].ranking[j].weight
+        if (j + 1 > r.length) {
+          r.push({ alternative: rankings[i][j].alternative, weight: 0 })
+        }
+
+        r[j].weight += rankings[i][j].weight
       }
     }
 
